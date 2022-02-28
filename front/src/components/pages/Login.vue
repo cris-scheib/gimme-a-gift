@@ -127,7 +127,7 @@ export default {
   background-color: #f4f2ea;
 }
 .form {
-  background-image: url(/img/icon_blue.f6c8f295.svg);
+  background-image: url("../../assets/icon_blue.svg");
     background-position: center;
     background-size: cover;
     height: 100vh;
