@@ -1,5 +1,5 @@
 # Node modules
-app/node_modules
+front/node_modules
 
 # Environment variables, never commit this file
-app/.env
+front/.env
