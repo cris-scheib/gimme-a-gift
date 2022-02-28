@@ -1,0 +1,5 @@
+# Node modules
+app/node_modules
+
+# Environment variables, never commit this file
+app/.env
