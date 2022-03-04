@@ -12,10 +12,10 @@
             <section>
               <b-form-group>
                 <b-form-input
-                  id="username"
-                  v-model="username"
+                  id="name"
+                  v-model="name"
                   type="text"
-                  placeholder="Username"
+                  placeholder="name"
                   required
                   disabled
                 ></b-form-input>
@@ -77,7 +77,7 @@ export default {
   },
   data() {
     return {
-      username: "",
+      name: "",
       email: "",
       password: "",
       newPassword: "",
@@ -115,7 +115,7 @@ export default {
      .get(`/api/user/me`)
         .then((res) => res.data)
         .then((data) => {
-          this.username = data.username;
+          this.name = data.name;
           this.email = data.email;
         })
     

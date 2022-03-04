@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;500&display=swap');
+
 #app {
     height: 100vh;
     position: relative;
+    font-family: 'Raleway', sans-serif;
 }
 
 body {
@@ -45,16 +48,16 @@ a:hover {
     box-shadow: unset;
 }
 
-.btn {
+.btn-primary {
     background-color: #d78db3;
-    color: #0c2e3a;
+    color: white;
     border: unset;
     border-radius: 3rem;
     padding: 0.5rem 2rem;
     width: 100%;
     text-transform: uppercase;
 }
-.btn-secondary:hover {
+.btn-primary:hover {
     color: #fff;
     background-color: #69b0b1;
     border-color: #69b0b1;

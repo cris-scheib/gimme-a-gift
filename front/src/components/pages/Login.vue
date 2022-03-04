@@ -9,15 +9,15 @@
                 <div class="center">
                   <img class="icon" src="@/assets/icon.svg" alt="Icon" />
                 </div>
-                <h3 class="title mt-3">Welcome</h3>
+                <h3 class="title mt-3">Bem vindo</h3>
               </header>
               <section>
-                <b-form-group v-if="!account">
+                <b-form-group v-if="account">
                   <b-form-input
-                    id="username"
-                    v-model="username"
+                    id="name"
+                    v-model="name"
                     type="text"
-                    placeholder="Username"
+                    placeholder="Nome"
                     required
                   ></b-form-input>
                 </b-form-group>
@@ -36,7 +36,7 @@
                     id="password"
                     v-model="password"
                     type="password"
-                    placeholder="Password"
+                    placeholder="Senha"
                     autocomplete="on"
                     required
                   ></b-form-input>
@@ -44,7 +44,7 @@
 
                 <b-form-group>
                   <b-form-checkbox v-model="account"
-                    >I already have an account</b-form-checkbox
+                    >Não possuo uma conta</b-form-checkbox
                   >
                 </b-form-group>
               </section>
@@ -53,8 +53,8 @@
                   class="button is-primary"
                   @click="check()"
                   :disabled="loading"
-                >
-                  {{ account ? "Login" : "Sign in" }}</b-button
+                  variant="primary"
+                >ENTRAR</b-button
                 >
               </footer>
             </b-form>
@@ -70,7 +70,7 @@ export default {
   props: ["hasAccount"],
   data() {
     return {
-      username: "",
+      name: "",
       email: "",
       password: "",
       account: this.hasAccount,
@@ -87,10 +87,10 @@ export default {
     },
     check() {
       this.loading = true;
-      let { username, email, password } = this;
+      let { name, email, password } = this;
       this.$api
-        .post(`/api/auth/${this.account ? "login" : "register"}`, {
-          username,
+        .post(`/api/auth/${this.account ? "register" : "login"}`, {
+          name,
           email,
           password,
         })
@@ -101,7 +101,7 @@ export default {
           if (res != undefined) {
             localStorage.setItem("token", res.data.token.token);
             localStorage.setItem("refreshToken", res.data.token.refreshToken);
-            localStorage.setItem("username", res.data.username);
+            localStorage.setItem("name", res.data.name);
             this.$router.push("/dashboard");
           } else {
             this.makeToast();
