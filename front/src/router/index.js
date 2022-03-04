@@ -4,20 +4,21 @@ import Vue from 'vue'
 Vue.use(Router)
 
 let router = new Router({
+    mode: 'history',
     routes: [{
-            path: '/',
-            name: 'auth',
+            path: '/login',
+            name: 'login',
             component: require('@/components/pages/Login').default,
             meta: {
                 guest: true
             }
         },
         {
-            path: '/dashboard',
+            path: '/',
             name: 'dashboard',
             component: require('@/components/pages/Dashboard').default,
             meta: {
-                guest: false
+                requiresAuth: true
             }
         },
         {
@@ -25,7 +26,7 @@ let router = new Router({
             name: 'me',
             component: require('@/components/pages/User').default,
             meta: {
-                guest: false
+                requiresAuth: true
             }
         },
         {
@@ -33,7 +34,7 @@ let router = new Router({
             name: 'movements-types',
             component: require('@/components/pages/MovementsTypes').default,
             meta: {
-                guest: false
+                requiresAuth: true
             }
         },
         {
@@ -41,7 +42,7 @@ let router = new Router({
             name: 'movements',
             component: require('@/components/pages/Movements').default,
             meta: {
-                guest: false
+                requiresAuth: true
             }
         },
     ]
@@ -50,7 +51,7 @@ let router = new Router({
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         let token = localStorage.getItem('token')
-        if (!token || token === 'null') next({ path: '/', params: { nextUrl: to.fullPath } })
+        if (!token || token === 'null') next({ path: '/login', params: { nextUrl: to.fullPath } })
         else next()
     } else if (to.matched.some(record => record.meta.guest)) {
         let token = localStorage.getItem('token')
