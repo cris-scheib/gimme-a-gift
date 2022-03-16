@@ -1,4 +1,4 @@
-# Project EVEY - Events
+# Projeto Gimme a Gift
 
 
 <p align="center">
