@@ -2,8 +2,16 @@
 
 
 <p align="center">
- <div>
-    <img src="https://github.com/cris-scheib/gimme-a-gift/blob/main/front/src/assets/icon.svg">
+ <div style="width: 300px;
+  background: white;
+  margin: auto;
+  padding: 1em;
+  border-radius: 100%;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;">
+    <img style="background: transparent;" src="https://github.com/cris-scheib/gimme-a-gift/blob/main/front/src/assets/icon.svg">
    </div>
 </p>
 <h5 align="center">
