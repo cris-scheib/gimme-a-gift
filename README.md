@@ -2,7 +2,7 @@
 
 
 <p align="center">
-    <img style="background: transparent;" src="https://github.com/cris-scheib/gimme-a-gift/blob/main/front/src/assets/icon.svg">
+    <img width="300px" src="https://github.com/cris-scheib/gimme-a-gift/blob/main/front/src/assets/icon.svg">
 </p>
 <h5 align="center">
   Sua lista de presentes digital
