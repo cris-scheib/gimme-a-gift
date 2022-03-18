@@ -18,7 +18,7 @@ let router = new Router({
             name: 'dashboard',
             component: require('@/components/pages/Dashboard').default,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -30,17 +30,17 @@ let router = new Router({
             }
         },
         {
-            path: '/movements-types',
-            name: 'movements-types',
-            component: require('@/components/pages/MovementsTypes').default,
+            path: '/listas-de-presentes',
+            name: 'listas-de-presentes',
+            component: require('@/components/pages/ListasPresentes').default,
             meta: {
                 requiresAuth: true
             }
         },
         {
-            path: '/movements',
-            name: 'movements',
-            component: require('@/components/pages/Movements').default,
+            path: '/listas-de-presente',
+            name: 'listas-de-presente',
+            component: require('@/components/pages/ListaPresentes').default,
             meta: {
                 requiresAuth: true
             }
