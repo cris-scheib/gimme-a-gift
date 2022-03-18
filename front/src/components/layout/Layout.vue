@@ -1,19 +1,14 @@
 <template>
   <div>
-    <b-sidebar id="my-sidebar" :title="this.name" shadow>
-      <div class="px-3 py-2">
-        <b-nav vertical>
-          <b-nav-item to="/me">Meu perfil</b-nav-item>
-          <b-nav-item @click="logout()">Sair</b-nav-item>
-        </b-nav>
-      </div>
-    </b-sidebar>
+    <Sidebar :colapsed="colapsed" />
     <main>
       <header>
-        <b-button class="user-data" variant="primary" v-b-toggle.my-sidebar>
-          <b-icon icon="person"></b-icon>
-          <p class="m-0 pl-2">{{ this.name }}</p>
+        <b-button class="btn-sidebar" @click="colapsed = !colapsed">
+          <b-icon v-if="colapsed" icon="chevron-double-right"></b-icon>
+          <b-icon v-else icon="chevron-double-left"></b-icon>
         </b-button>
+        <b-icon icon="person"></b-icon>
+        <p class="m-0 pl-2">{{ this.name }}</p>
       </header>
       <slot />
       <footer></footer>
@@ -22,10 +17,13 @@
 </template>
 
 <script>
+import Sidebar from "./Sidebar.vue";
 export default {
+  components: { Sidebar },
   data() {
     return {
       name: "",
+      colapsed: true,
     };
   },
   methods: {
@@ -35,13 +33,15 @@ export default {
     },
   },
   created: function () {
-    this.name = localStorage.getItem("name");
+    // this.name = localStorage.getItem("name");
+    this.name = "Usuário Teste";
   },
 };
 </script>
 <style scoped>
 main {
   height: 100vh;
+  margin-left: 13em;
   background-color: #f4f2ea;
 }
 header {
@@ -61,6 +61,12 @@ header {
   padding: 0.3rem 0rem;
   color: #69b0b1;
   font-size: 1.1rem;
+}
+.btn-sidebar {
+  margin-right: auto;
+  background-color: unset;
+  border-color: white;
+  color: white;
 }
 </style>
 
