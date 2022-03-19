@@ -1,14 +1,15 @@
 <template>
-  <div>
-    <Sidebar :colapsed="colapsed" />
+  <div class="h-100">
+    <Sidebar :collapsed="collapsed" />
     <main>
       <header>
-        <b-button class="btn-sidebar" @click="colapsed = !colapsed">
-          <b-icon v-if="colapsed" icon="chevron-double-right"></b-icon>
-          <b-icon v-else icon="chevron-double-left"></b-icon>
+        <b-button class="btn-sidebar" @click="collapsed = !collapsed">
+          <b-icon icon="list"></b-icon>
         </b-button>
-        <b-icon icon="person"></b-icon>
-        <p class="m-0 pl-2">{{ this.name }}</p>
+        <b-button to="/minha-conta" class="btn-usuario">
+          <img :src="this.image" alt="Avatar" />
+          <p class="m-0 pl-2">{{ this.name }}</p>
+        </b-button>
       </header>
       <slot />
       <footer></footer>
@@ -23,7 +24,8 @@ export default {
   data() {
     return {
       name: "",
-      colapsed: true,
+      collapsed: true,
+      image: "https://avatars.githubusercontent.com/u/61483993?v=4",
     };
   },
   methods: {
@@ -34,22 +36,19 @@ export default {
   },
   created: function () {
     // this.name = localStorage.getItem("name");
-    this.name = "Usuário Teste";
+    this.name = "Cristine";
   },
 };
 </script>
 <style scoped>
 main {
-  height: 100vh;
+  height: 100%;
   margin-left: 13em;
   background-color: #f4f2ea;
 }
 header {
   padding: 1em;
   background: linear-gradient(45deg, #d78db3, #69b0b1);
-}
-.user-data {
-  width: unset;
 }
 header {
   display: flex;
@@ -62,11 +61,30 @@ header {
   color: #69b0b1;
   font-size: 1.1rem;
 }
-.btn-sidebar {
+.btn-sidebar,
+.btn-sidebar:hover {
   margin-right: auto;
   background-color: unset;
-  border-color: white;
+  border: unset;
   color: white;
+  padding: 0.247rem 0.5rem;
+}
+.btn-usuario {
+  display: flex;
+  background-color: unset;
+  border-color: white;
+  border-radius: 3rem;
+  color: white;
+  justify-content: center;
+  align-items: center;
+}
+.btn-usuario:hover {
+  background-color: unset;
+  border-color: transparent;
+}
+.btn-usuario img {
+  width: 2em;
+  border-radius: 100%;
 }
 </style>
 
