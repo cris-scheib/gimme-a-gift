@@ -14,27 +14,35 @@ let router = new Router({
             }
         },
         {
-            path: '/',
-            name: 'dashboard',
-            component: require('@/components/pages/Dashboard').default,
+            path: '/relatorios',
+            name: 'relatorios',
+            component: require('@/components/pages/Relatorios').default,
             meta: {
                 requiresAuth: false
             }
         },
         {
-            path: '/me',
-            name: 'me',
-            component: require('@/components/pages/User').default,
+            path: '/pagamentos',
+            name: 'pagamentos',
+            component: require('@/components/pages/Pagamentos').default,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
-            path: '/listas-de-presentes',
+            path: '/minha-conta',
+            name: 'minha-conta',
+            component: require('@/components/pages/Usuario').default,
+            meta: {
+                requiresAuth: false
+            }
+        },
+        {
+            path: '/',
             name: 'listas-de-presentes',
             component: require('@/components/pages/ListasPresentes').default,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
         {
@@ -42,7 +50,7 @@ let router = new Router({
             name: 'listas-de-presente',
             component: require('@/components/pages/ListaPresentes').default,
             meta: {
-                requiresAuth: true
+                requiresAuth: false
             }
         },
     ]
@@ -56,7 +64,7 @@ router.beforeEach((to, from, next) => {
     } else if (to.matched.some(record => record.meta.guest)) {
         let token = localStorage.getItem('token')
         if (!token || token === 'null') next()
-        else next({ name: 'dashboard' })
+        else next({ name: 'listas-de-presentes' })
     } else {
         next()
     }

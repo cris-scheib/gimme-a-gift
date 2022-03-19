@@ -1,32 +1,34 @@
 <template>
-  <div class="sidebar" v-bind:class="{ colapsed: colapsed }">
-    <nav>
-      <b-nav vertical>
-        <img class="icon" src="@/assets/icon_white.svg" alt="Icon" />
-        <b-nav-item to="dashboard">
-          <b-icon class="mr-1" icon="bar-chart-fill"></b-icon>
-          <span>Dashboard</span>
-        </b-nav-item>
-        <b-nav-item to="listas-de-presentes">
-          <b-icon class="mr-1" icon="gift-fill"></b-icon>
-          <span>Listas de Presentes</span>
-        </b-nav-item>
-        <b-nav-item to="eventos">
-          <b-icon class="mr-1" icon="calendar2-day-fill"></b-icon>
-          <span>Eventos</span>
-        </b-nav-item>
-        <b-nav-item to="pagamentos">
-          <b-icon class="mr-1" icon="credit-card"></b-icon>
-          <span>Meus Pagamentos</span>
-        </b-nav-item>
-      </b-nav>
-    </nav>
+  <div class="sidebar" v-bind:class="{ collapsed: collapsed }">
+    <div class="sidebar-content">
+      <nav>
+        <b-nav vertical>
+          <img class="icon" src="@/assets/icon_white.svg" alt="Icon" />
+          <b-nav-item to="/" title="Listas de Presentes">
+            <b-icon class="mr-1" icon="gift-fill"></b-icon>
+            <span>Listas de Presentes</span>
+          </b-nav-item>
+          <!-- <b-nav-item to="eventos" title="Eventos">
+            <b-icon class="mr-1" icon="calendar2-day-fill"></b-icon>
+            <span>Eventos</span>
+          </b-nav-item> -->
+          <b-nav-item to="relatorios" title="Relatórios">
+            <b-icon class="mr-1" icon="bar-chart-fill"></b-icon>
+            <span>Relatórios</span>
+          </b-nav-item>
+          <b-nav-item to="pagamentos" title="Meus Pagamentos">
+            <b-icon class="mr-1" icon="credit-card"></b-icon>
+            <span>Meus Pagamentos</span>
+          </b-nav-item>
+        </b-nav>
+      </nav>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["colapsed"],
+  props: ["collapsed"],
 };
 </script>
 
@@ -36,12 +38,12 @@ export default {
   margin: auto;
   padding: 1em;
 }
-.sidebar.colapsed .icon {
+.sidebar.collapsed .icon {
   width: 5em;
   padding: 0.8em;
+  margin-bottom: 1em;
 }
 .sidebar {
-  background-color: #69b0b1;
   width: 13rem;
   position: fixed;
   height: 100vh;
@@ -68,10 +70,10 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.sidebar.colapsed {
+.sidebar.collapsed {
   width: 5rem;
 }
-.sidebar.colapsed .nav-link span {
+.sidebar.collapsed .nav-link span {
   display: none;
 }
 </style>

@@ -9,8 +9,16 @@
 body {
   margin: 0;
 }
-
-.sidebar.colapsed + main {
+.sidebar-content{
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  background-color: #69b0b1;
+  height: 100%;
+}
+.sidebar{
+  background: linear-gradient(180deg, #d78db3, #f4f2ea);
+}
+.sidebar.collapsed + main {
   margin-left: 5em;
 }
 
@@ -18,7 +26,7 @@ body {
   border: #d78db3 solid 2px;
 }
 
-.sidebar.colapsed .nav-link {
+.sidebar.collapsed .nav-link {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,9 +86,14 @@ a:hover {
 
 .btn:focus {
   color: #fff;
-  background-color: #5a6268;
-  border-color: #545b62;
-  box-shadow: 0 0 0 0.2rem rgb(130 138 145 / 50%);
+  background-color: unset !important;
+  border-color: unset !important;
+  box-shadow: unset !important;
+}
+
+.btn-sidebar:focus, .btn-sidebar:active {
+  box-shadow: unset !important;
+  background-color: unset !important;
 }
 
 .custom-checkbox {
@@ -98,7 +111,7 @@ tbody tr:hover {
 }
 
 .modal-content {
-  background-color: #17171a;
+  background-color: #f4f2ea;
 }
 
 .modal-title,
@@ -114,7 +127,7 @@ label {
 }
 
 .custom-select option {
-  background-color: #17171a;
+  background-color: #f4f2ea;
 }
 
 .modal-footer .btn {
