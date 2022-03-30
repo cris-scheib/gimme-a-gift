@@ -5,6 +5,7 @@ const authController = new AuthController();
 
 const router = express.Router();
 
-router.post('/login', authController.store);
+router.post('/login', authController.login);
+router.post('/register', authController.register);
 
 export { router as authRouter };

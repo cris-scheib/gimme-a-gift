@@ -8,7 +8,7 @@ import axios from 'axios'
 
 require('./assets/css/custom.css');
 const api = axios.create({
-    baseURL: 'http://'+process.env.VUE_APP_API_URL + ':'+process.env.VUE_APP_API_PORT,
+    baseURL: `http://${process.env.VUE_APP_API_URL}:${+process.env.VUE_APP_API_PORT}/api/`,
 })
 
 api.interceptors.request.use(
@@ -28,8 +28,8 @@ api.interceptors.response.use(
     response => response,
     error => {
         if (error.response.status === 401) {
-            localStorage.clear()
-            router.replace({ path: '/' })
+             localStorage.clear()
+             router.replace({ path: '/login' })
         } else {
             return Promise.reject(error.response.data)
         }
