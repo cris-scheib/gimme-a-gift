@@ -1,13 +1,16 @@
-import mongoose from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate';
-import bcrypt from 'bcrypt';
+import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate";
+import bcrypt from "bcrypt";
 
 interface IUser extends mongoose.Document {
-  name: string;
-  username: string;
   email: string;
   password: string;
+  name: string;
   createdAt: Date;
+  photo: string | null;
+  lastAccess: Date | null;
+  genre: string | null;
+  cpf: string | null;
   deletedAt: Date | null;
 }
 
@@ -16,20 +19,16 @@ interface IUserModel extends IUser, mongoose.Document {
 }
 
 const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  username: {
-    type: String,
-    required: true,
-  },
   email: {
     type: String,
     required: true,
-    validate: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/
+    validate: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
   },
   password: {
+    type: String,
+    required: true,
+  },
+  name: {
     type: String,
     required: true,
   },
@@ -37,9 +36,21 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  updatedAt: {
+  photo: {
+    type: String,
+    required: false,
+  },
+  lastAccess: {
     type: Date,
     default: Date.now(),
+  },
+  genre: {
+    type: String,
+    required: false,
+  },
+  cpf: {
+    type: String,
+    required: false,
   },
   deletedAt: {
     type: Date

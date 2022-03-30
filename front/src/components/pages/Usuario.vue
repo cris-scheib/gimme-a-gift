@@ -5,7 +5,8 @@
         <b-col cols="12" lg="10" md="9">
           <b-row class="center">
             <b-col cols="12" md="4" class="mb-auto">
-              <img :src="this.image" alt="Avatar" class="image-user" />
+              <img v-if="this.photo === null" alt="Ícone de usuário" src="@/assets/user-icon.svg" class="photo-user" />
+              <img v-else :src="this.photo" alt="Avatar" class="image-user" />
             </b-col>
             <b-col cols="12" md="8">
               <b-form>
@@ -80,6 +81,15 @@
                     ></b-form-input>
                   </b-form-group>
                 </section>
+                 <div class="center">
+                   <b-button
+                  class="button is-primary w-unset mt-4"
+                  @click="save()"
+                  :disabled="loading"
+                  variant="primary"
+                >Salvar</b-button
+                >
+                 </div>
               </b-form>
             </b-col>
           </b-row>
@@ -98,11 +108,13 @@ export default {
   },
   data() {
     return {
+      id: null,
       name: "",
       email: "",
       password: "",
       newPassword: "",
-      cpf: "000.000.000-00",
+      photo: "",
+      cpf: "",
       genre: "Feminino",
       loading: false,
       errors: [],
@@ -119,39 +131,44 @@ export default {
         solid: true,
       });
     },
-    changePassword() {
-      let { password, newPassword, email } = this;
+    save() {
+      this.loading = true;
+      let { name, email, cpf, genre } = this;
       this.$api
-        .put(`/api/user/password/`, { password, newPassword, email })
+        .patch(`/users/${this.id}/`, { name, email, cpf, genre })
         .then((res) => {
           this.makeToast("success", res.data.message);
-          this.password = "";
-          this.newPassword = "";
+          this.loading = false;
+          // this.password = "";
+          // this.newPassword = "";
         })
         .catch((error) => {
           this.makeToast("danger", error.message);
           console.log("error", error);
+          this.loading = false;
         });
     },
   },
   created: function () {
-    this.name = "Cristine";
-    this.image = "https://avatars.githubusercontent.com/u/61483993?v=4";
-    this.email = "cris.scheib@hotmail.com";
-    this.name = "Cristine";
-    // this.$api
-    //  .get(`/api/user/me`)
-    //     .then((res) => res.data)
-    //     .then((data) => {
-    //       this.name = data.name;
-    //       this.email = data.email;
-    //     })
+    this.$api
+      .get(`/profile`)
+      .then((res) => res.data)
+      .then((data) => {
+        this.id = data.id;
+        this.name = data.name;
+        this.email = data.email;
+        this.cpf = data.cpf;
+        this.genre = data.genre === null ? 'Masculino' : data.genre;
+        this.photo = data.photo
+      });
   },
 };
 </script>
 <style scoped>
-.image-user {
+.photo-user {
   width: 100%;
   border-radius: 100%;
+  background: linear-gradient(45deg, #d78db3, #69b0b1);
+  padding: .5em;
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="content">
     <b-container fluid class="form">
       <b-row class="h-100">
-        <b-col lg="4" cols="7" class="m-auto">
+        <b-col cols="12"  xl="5" lg="6" md="7" sm="9" class="m-auto">
           <b-card>
             <b-form>
               <header>
@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     makeToast() {
-      this.$bvToast.toast("Email or password invalid", {
+      this.$bvToast.toast("Email ou senha inválida", {
         title: "Error",
         variant: "danger",
         solid: true,
@@ -89,7 +89,7 @@ export default {
       this.loading = true;
       let { name, email, password } = this;
       this.$api
-        .post(`/api/auth/${this.account ? "register" : "login"}`, {
+        .post(`/${this.account ? "register" : "login"}`, {
           name,
           email,
           password,
@@ -99,10 +99,9 @@ export default {
         })
         .then((res) => {
           if (res != undefined) {
-            localStorage.setItem("token", res.data.token.token);
-            localStorage.setItem("refreshToken", res.data.token.refreshToken);
+            localStorage.setItem("token", res.data.token);
             localStorage.setItem("name", res.data.name);
-            this.$router.push("/dashboard");
+            this.$router.push("/");
           } else {
             this.makeToast();
             this.loading = false;
@@ -118,7 +117,7 @@ export default {
   width: 12em;
 }
 .title {
-  color: #d78db3;
+  color: #69b0b1;
   letter-spacing: 1px;
   margin-bottom: 2rem;
   text-align: center;
