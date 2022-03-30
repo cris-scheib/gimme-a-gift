@@ -9,21 +9,23 @@
 body {
   margin: 0;
 }
-.sidebar-content{
+.sidebar-content {
   border-top-right-radius: 2rem;
   border-bottom-right-radius: 2rem;
   background-color: #69b0b1;
   height: 100%;
 }
-.sidebar{
+.sidebar {
   background: linear-gradient(180deg, #d78db3, #f4f2ea);
 }
 .sidebar.collapsed + main {
   margin-left: 5em;
 }
-
+.sidebar.collapsed  + main header {
+  width: calc(100% - 5em);
+}
 .custom-control-label::before {
-  border: #d78db3 solid 2px;
+  border: #69b0b1 solid 2px;
 }
 
 .sidebar.collapsed .nav-link {
@@ -32,7 +34,7 @@ body {
   align-items: center;
 }
 .custom-control-input:checked + .custom-control-label::after {
-  background-color: #d78db3;
+  background-color: #69b0b1;
   border-radius: 0.25rem;
 }
 
@@ -91,7 +93,8 @@ a:hover {
   box-shadow: unset !important;
 }
 
-.btn-sidebar:focus, .btn-sidebar:active {
+.btn-sidebar:focus,
+.btn-sidebar:active {
   box-shadow: unset !important;
   background-color: unset !important;
 }
@@ -116,14 +119,14 @@ tbody tr:hover {
 
 .modal-title,
 label {
-  color: #d78db3;
+  color: #69b0b1;
 }
 
 .custom-select {
   background-color: #ffffff00;
   border: unset !important;
   border-radius: 3rem;
-  color: #d78db3;
+  color: #69b0b1;
 }
 
 .custom-select option {

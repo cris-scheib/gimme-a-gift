@@ -11,7 +11,9 @@
           <p class="m-0 pl-2">{{ this.name }}</p>
         </b-button>
       </header>
-      <slot />
+      <div class="slot">
+        <slot />
+      </div>
       <footer></footer>
     </main>
   </div>
@@ -35,25 +37,28 @@ export default {
     },
   },
   created: function () {
-    // this.name = localStorage.getItem("name");
-    this.name = "Cristine";
+    this.name = localStorage.getItem("name");
   },
 };
 </script>
 <style scoped>
 main {
-  height: 100%;
+  min-height: 100%;
   margin-left: 13em;
   background-color: #f4f2ea;
 }
 header {
   padding: 1em;
   background: linear-gradient(45deg, #d78db3, #69b0b1);
-}
-header {
+  position: fixed;
+  width: calc(100% - 13rem);
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  z-index: 1;
+}
+.slot{
+  padding-top: 5rem;
 }
 .nav-link {
   display: block;
