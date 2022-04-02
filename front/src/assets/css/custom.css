@@ -27,7 +27,11 @@ body {
 .custom-control-label::before {
   border: #69b0b1 solid 2px;
 }
-
+.flex-end{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
 .sidebar.collapsed .nav-link {
   display: flex;
   justify-content: center;
@@ -66,7 +70,15 @@ a:hover {
   outline: unset;
   box-shadow: unset;
 }
-
+.btn-cancel{
+  background-color: #bbbbbb;
+  color: white;
+  border: unset;
+  border-radius: 3rem;
+  padding: 0.5rem 2rem;
+  width: 100%;
+  text-transform: uppercase;
+}
 .btn-primary {
   background-color: #d78db3;
   color: white;
@@ -76,10 +88,10 @@ a:hover {
   width: 100%;
   text-transform: uppercase;
 }
-.btn-primary:hover {
+.btn-primary:hover ,.modal-footer .btn:hover{
   color: #fff;
-  background-color: #69b0b1;
-  border-color: #69b0b1;
+  background-color: #69b0b1 !important;
+  border-color: #69b0b1 !important;
 }
 
 .btn-edit {
@@ -114,14 +126,17 @@ tbody tr:hover {
 }
 
 .modal-content {
-  background-color: #f4f2ea;
+  background-color: white;
 }
 
 .modal-title,
 label {
   color: #69b0b1;
 }
-
+.custom-file-label{
+  border-radius: 19px;
+    border: 1px solid #e9ecef;
+}
 .custom-select {
   background-color: #ffffff00;
   border: unset !important;
