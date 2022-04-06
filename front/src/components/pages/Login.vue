@@ -50,7 +50,6 @@
               </section>
               <footer class="center">
                 <b-button
-                  class="button is-primary"
                   @click="check()"
                   :disabled="loading"
                   variant="primary"

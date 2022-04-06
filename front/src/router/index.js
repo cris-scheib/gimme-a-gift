@@ -46,8 +46,8 @@ let router = new Router({
             }
         },
         {
-            path: '/listas-de-presente',
-            name: 'listas-de-presente',
+            path: '/lista-de-presentes/:id',
+            name: 'lista-de-presentes',
             component: require('@/components/pages/ListaPresentes').default,
             meta: {
                 requiresAuth: false
