@@ -20,10 +20,14 @@
 - Consultar e alterar disponibilidade de produtos conforme preferência
 - Gerenciar convidados e presentes de forma transparente
 
+----------------------------
+
 ### Estrutura do projeto 
 <p align="center">
   <img src="https://raw.githubusercontent.com/cris-scheib/gimme-a-gift/main/front/public/estrutura.jpeg">
 </p>
+
+----------------------------
 
 ### Configuração do projeto
 
@@ -54,6 +58,8 @@ npm install
 npm start
 ```
 Veja [Referências e mais informações](https://expressjs.com/pt-br/starter/installing.html).
+
+----------------------------
 
 ### Contribuidores
 - [Fáiza Schoeninger](https://github.com/faizaleticia)
