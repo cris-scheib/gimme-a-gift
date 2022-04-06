@@ -43,6 +43,18 @@ npm run build
 ```
 Veja [Referências e mais informações](https://cli.vuejs.org/config/).
 
+#### Backend
+
+###### Instalar o projeto
+```
+npm install
+```
+###### Iniciar o serviço
+```
+npm start
+```
+Veja [Referências e mais informações](https://expressjs.com/pt-br/starter/installing.html).
+
 ### Contribuidores
 - [Fáiza Schoeninger](https://github.com/faizaleticia)
 - [Cristine Scheibler](https://github.com/cris-scheib)
