@@ -25,6 +25,24 @@
   <img src="https://raw.githubusercontent.com/cris-scheib/gimme-a-gift/main/front/public/estrutura.jpeg">
 </p>
 
+### Configuração do projeto
+
+#### Frontend
+
+###### Instalar o projeto
+```
+npm install
+```
+###### Compilação hot-reloads para desenvolvimento
+```
+npm run serve
+```
+###### Compilação minificada para produção
+```
+npm run build
+```
+Veja [Referências e mais informações](https://cli.vuejs.org/config/).
+
 ### Contribuidores
 - [Fáiza Schoeninger](https://github.com/faizaleticia)
 - [Cristine Scheibler](https://github.com/cris-scheib)
