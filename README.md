@@ -47,6 +47,8 @@ npm run build
 ```
 Veja [Referências e mais informações](https://cli.vuejs.org/config/).
 
+----------------------------
+
 #### Backend
 
 ###### Instalar o projeto
