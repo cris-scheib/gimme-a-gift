@@ -2,13 +2,19 @@ import { Request, Response } from "express";
 import { now } from "mongoose";
 
 import List from "../models/list";
+import UserList from "../models/userList";
 
 class ListController {
   index = async (request: Request, response: Response) => {
     const { page = 1 } = request.query;
-    // const user = response.locals.jwtPayload.id;
+    const userId = response.locals.jwtPayload.id;
+    const userLists = await UserList.find({
+      userId: userId
+    }).select({listId: 1, _id: 0});
+    const listIds = userLists.map((userList) => { return userList.listId; });
     const lists = await List.paginate(
       {
+        "_id": { "$in": listIds },
         deletedAt: null,
       },
       {
@@ -21,17 +27,33 @@ class ListController {
   };
 
   show = async (request: Request, response: Response) => {
-    const list = await List.findById(response.locals.jwtPayload.id);
+    const { id } = request.params;
+    const userId = response.locals.jwtPayload.id;
+    const userList = await UserList.findOne({
+      userId: userId,
+      listId: id,
+      status:true
+    })
+    if(userList && userList.permissions.length > 0){
+      const list = await List.findById(id);
+      return response.json(list);
+    }else{
+      return response.status(401).json({
+        auth: false,
+        message: "Autenticação inválida!",
+      });
+    }
 
-    return response.json({
-      id: list?._id,
-      name: list?.name,
-      listProduct: list?.listProduct,
-    });
   };
   create = async (request: Request, response: Response) => {
     const list = await List.create(request.body);
-    if (list) {
+    const userId = response.locals.jwtPayload.id;
+    const userList = await UserList.create({
+      listId: list._id,
+      userId: userId,
+      permissions: ["write", "read"],
+    });
+    if (list && userList) {
       return response.json({ list, error: false });
     }
     return response.status(500).json({
