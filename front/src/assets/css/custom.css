@@ -21,13 +21,13 @@ body {
 .sidebar.collapsed + main {
   margin-left: 5em;
 }
-.sidebar.collapsed  + main header {
+.sidebar.collapsed + main header {
   width: calc(100% - 5em);
 }
 .custom-control-label::before {
   border: #69b0b1 solid 2px;
 }
-.flex-end{
+.flex-end {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -70,7 +70,7 @@ a:hover {
   outline: unset;
   box-shadow: unset;
 }
-.btn-cancel{
+.btn-cancel {
   background-color: #bbbbbb;
   color: white;
   border: unset;
@@ -88,7 +88,8 @@ a:hover {
   width: 100%;
   text-transform: uppercase;
 }
-.btn-primary:hover ,.modal-footer .btn:hover{
+.btn-primary:hover,
+.modal-footer .btn:hover {
   color: #fff;
   background-color: #69b0b1 !important;
   border-color: #69b0b1 !important;
@@ -133,9 +134,9 @@ tbody tr:hover {
 label {
   color: #69b0b1;
 }
-.custom-file-label{
+.custom-file-label {
   border-radius: 19px;
-    border: 1px solid #e9ecef;
+  border: 1px solid #e9ecef;
 }
 .custom-select {
   background-color: #ffffff00;
@@ -158,7 +159,11 @@ label {
   border-color: #545b62;
 }
 
-.modal-body,
-.table {
-  color: white !important;
+.dropdown-no-style .btn , .dropdown-no-style .btn:active {
+  background-color: unset !important;
+  border: unset;
+  padding: unset;
+}
+.dropdown-no-style .btn::after {
+  content: unset;
 }

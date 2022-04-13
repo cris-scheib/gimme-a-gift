@@ -3,12 +3,17 @@ import mongoosePaginate from "mongoose-paginate";
 
 interface IList extends mongoose.Document {
   name: string;
+  description: string;
   createdAt: Date;
   listProduct: Array<Object>;
 }
 
 const ListSchema = new mongoose.Schema({
   name: {
+    type: String,
+    required: true,
+  },
+  description: {
     type: String,
     required: true,
   },

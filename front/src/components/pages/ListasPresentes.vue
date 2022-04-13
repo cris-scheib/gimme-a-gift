@@ -30,7 +30,8 @@
             <b-card @click="editList(list._id)">
               <div>
                 <div class="list-info">
-                  <p>{{ list.name }}</p>
+                  <h5>{{ list.name }}</h5>
+                  <p>{{ list.description }}</p>
                 </div>
                 <div class="d-flex justify-content-end mt-3">
                   <b-button variant="primary">Ver mais</b-button>
@@ -64,6 +65,7 @@ export default {
       this.$api
         .post(`/lists`, {
           name: "Nova lista",
+          description: "Descrição da nova lista",
         })
         .catch((error) => {
           console.log("error", error);
@@ -94,8 +96,27 @@ export default {
   cursor: pointer;
   height: 12em;
   position: relative;
+  overflow: hidden;
 }
 
+.col-12:nth-child(2n+2) .card:not(.new) .card-body{
+  border-top: 13px solid transparent;
+  -o-border-image: linear-gradient(90deg, #d78db3, #f4d562);
+  border-image: linear-gradient(90deg, #d78db3, #f4d562);
+  border-image-slice: 1;
+}
+.col-12:nth-child(3n+3) .card:not(.new) .card-body{
+  border-top: 13px solid transparent;
+  -o-border-image: linear-gradient(90deg, #69b0b1, #f4d562);
+  border-image: linear-gradient(90deg, #69b0b1, #f4d562);
+  border-image-slice: 1;
+}
+.col-12:nth-child(4n+4) .card:not(.new) .card-body{
+  border-top: 13px solid transparent;
+  -o-border-image: linear-gradient(90deg, #69b0b1, #d78db3);
+  border-image: linear-gradient(90deg, #69b0b1, #d78db3);
+  border-image-slice: 1;
+}
 .card.new .card-body {
   z-index: 1;
   display: flex;
@@ -123,7 +144,7 @@ export default {
 }
 
 .list-info {
-  height: 6em;
+  height: 5.5em;
 }
 .card.new::after {
   position: absolute;
@@ -133,7 +154,7 @@ export default {
   width: 100%;
   height: 100%;
   border-radius: 1em;
-  background: linear-gradient(45deg, #d78db3, #69b0b1);
+  background: linear-gradient(45deg, #d78db3, #f4d562);
   z-index: 0;
   clip-path: circle(5% at 105% -10%);
   transition: all 0.1s ease-out;
@@ -145,7 +166,7 @@ export default {
   color: white;
 }
 .card.new:hover .icon-content {
-  color: #69b0b1;
+  color: #f4d562;
   background-color: white;
 }
 </style>
