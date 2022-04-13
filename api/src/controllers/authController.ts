@@ -24,6 +24,7 @@ class AuthController {
 
         const id = user._id;
         const name = user.name;
+        const photo = user.photo;
         const secret = process.env.JWT_SECRET ?? "";
         const token = jwt.sign({ id }, secret);
 
@@ -31,6 +32,7 @@ class AuthController {
           auth: true,
           token,
           name,
+          photo,
         });
       });
     } else {
@@ -51,12 +53,14 @@ class AuthController {
     if (user) {
       const id = user._id;
       const name = user.name;
+      const photo = user.photo;
       const secret = process.env.JWT_SECRET ?? "";
       const token = jwt.sign({ id }, secret);
 
       return response.status(200).json({
         auth: true,
         token,
+        photo,
         name,
       });
     } else {

@@ -2,50 +2,41 @@
   <layout>
     <div class="list-content">
       <div class="list-header">
-        <svg
-          data-v-4855107e=""
-          data-v-063de322=""
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          viewBox="0 29 151 18"
-          preserveAspectRatio="none"
-          shape-rendering="auto"
-          class="waves"
-        >
-          <defs data-v-4855107e="" data-v-063de322="">
-            <path
-              data-v-4855107e=""
-              data-v-063de322=""
-              id="gentle-wave"
-              d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
-            ></path>
-          </defs>
-          <use
-            data-v-4855107e=""
-            data-v-063de322=""
-            xlink:href="#gentle-wave"
-            x="39"
-            y="-11"
-            fill="#d78db3"
-          ></use>
-          <use
-            data-v-4855107e=""
-            data-v-063de322=""
-            xlink:href="#gentle-wave"
-            x="48"
-            y="7"
-            fill="#69b0b1"
-          ></use>
-        </svg>
+        <div>
+          <b-link to="/listas-de-presentes">
+            <b-icon icon="arrow-left"></b-icon>
+          </b-link>
+        </div>
+        <modal-delete :url="urlDelete" redirect="/listas-de-presentes" />
+        <div class="ml-auto">
+          <b-dropdown right class="dropdown-no-style">
+            <template #button-content>
+              <b-icon icon="three-dots-vertical"></b-icon>
+            </template>
+            <b-dropdown-item  v-b-modal.modal-delete>Excluir lista</b-dropdown-item>
+          </b-dropdown>
+        </div>
       </div>
       <b-container fluid>
-        <b-form-group>
+        <b-form-group class="mb-1">
           <b-form-input
             id="name"
             v-model="list.name"
             type="text"
             placeholder="Nome"
-            required
+            @input="update({ name: list.name })"
+            v-if="list"
+          ></b-form-input>
+        </b-form-group>
+        <b-form-group>
+          <b-form-input
+            id="description"
+            v-model="list.description"
+            type="text"
+            placeholder="Descrição"
+            class="small"
+            v-if="list"
+            @input="update({ description: list.description })"
           ></b-form-input>
         </b-form-group>
       </b-container>
@@ -55,14 +46,17 @@
 
 <script>
 import Layout from "../layout/Layout.vue";
+import ModalDelete from "../modals/modalDelete.vue";
 
 export default {
   components: {
     Layout,
+    ModalDelete,
   },
   data() {
     return {
-      list: [],
+      list: null,
+      urlDelete: `/lists/${this.$route.params.id}`
     };
   },
   created: function () {
@@ -72,6 +66,11 @@ export default {
       .then((data) => {
         this.list = data;
       });
+  },
+  methods: {
+    update(field) {
+      this.$api.patch(`/lists/${this.$route.params.id}`, field);
+    },
   },
 };
 </script>
@@ -85,16 +84,20 @@ export default {
   background-color: white;
 }
 .list-header {
-  background-color: #69b0b1;
-  height: 3em;
+  background: linear-gradient(90deg, #69b0b1, #f4d562, #cc90b2);
   border-top-left-radius: 1rem;
-  overflow: hidden;
+  display: flex;
+  padding: 1rem;
 }
 
 .form-control {
   font-size: 1.5em;
   margin-top: 0.7em;
   border-bottom: unset;
+}
+.form-control.small {
+  font-size: 1em;
+  margin-top: 0;
 }
 
 .form-control:active,
@@ -105,5 +108,9 @@ export default {
   border-bottom: 2px solid white;
   -o-border-image: linear-gradient(45deg, #d78db3, #69b0b1) 1;
   border-image: linear-gradient(45deg, #d78db3, #69b0b1) 1;
+}
+.bi-arrow-left {
+  color: white;
+  font-size: 1.5em;
 }
 </style>

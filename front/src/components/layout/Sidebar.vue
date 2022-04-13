@@ -4,7 +4,7 @@
       <nav>
         <b-nav vertical>
           <img class="icon" src="@/assets/icon_white.svg" alt="Icon" />
-          <b-nav-item to="/" title="Listas de Presentes">
+          <b-nav-item to="/listas-de-presentes" title="Listas de Presentes">
             <b-icon class="mr-1" icon="gift-fill"></b-icon>
             <span>Listas de Presentes</span>
           </b-nav-item>
