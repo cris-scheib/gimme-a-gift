@@ -7,7 +7,7 @@
           <b-icon icon="list"></b-icon>
         </b-button>
         <b-button to="/minha-conta" class="btn-usuario">
-          <img :src="this.image" alt="Avatar" />
+          <img :src="this.photo" alt="Avatar" class="photo"/>
           <p class="m-0 pl-2">{{ this.name }}</p>
         </b-button>
       </header>
@@ -27,7 +27,7 @@ export default {
     return {
       name: "",
       collapsed: true,
-      image: "https://avatars.githubusercontent.com/u/61483993?v=4",
+      photo: null,
     };
   },
   methods: {
@@ -38,6 +38,7 @@ export default {
   },
   created: function () {
     this.name = localStorage.getItem("name");
+    this.photo = localStorage.getItem("photo") === null ? require('@/assets/user-icon.svg') : require('@/assets/user-icon.svg');
   },
 };
 </script>
@@ -90,6 +91,12 @@ header {
 .btn-usuario img {
   width: 2em;
   border-radius: 100%;
+}
+.b-icon.bi{
+  font-size: 1.5em !important;
+}
+.photo{
+      background: linear-gradient(45deg, #d78db3, #69b0b1);
 }
 </style>
 

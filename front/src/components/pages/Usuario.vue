@@ -11,34 +11,7 @@
                 :src="this.photo"
                 v-b-modal.modal-photo
               />
-              <b-modal
-                ref="modal-photo"
-                id="modal-photo"
-                title="Update your user image"
-              >
-                <b-form-file
-                  ref="file"
-                  v-model="newPhoto"
-                  placeholder="Escolha uma imagem ..."
-                  drop-placeholder="Arraste a imagem aqui..."
-                  @change="uploadFile"
-                ></b-form-file>
-
-                <template #modal-footer>
-                  <div class="w-100 flex-end">
-                    <b-button
-                      variant="secondary"
-                      @click="close()"
-                      class="btn-cancel mr-2"
-                    >
-                      Cancelar
-                    </b-button>
-                    <b-button variant="primary" @click="savePhoto()">
-                      Salvar
-                    </b-button>
-                  </div>
-                </template>
-              </b-modal>
+              <modal-photo/>
             </b-col>
             <b-col cols="12" md="8">
               <b-form>
@@ -133,10 +106,12 @@
 
 <script>
 import Layout from "../layout/Layout.vue";
+import ModalPhoto from '../modals/modalPhoto.vue';
 
 export default {
   components: {
     Layout,
+    ModalPhoto,
   },
   data() {
     return {
@@ -170,6 +145,7 @@ export default {
         .patch(`/users/${this.id}/`, data)
         .then((res) => {
           this.makeToast("success", res.data.message);
+          localStorage.setItem("name", this.name);
           this.loading = false;
           this.password = "";
           this.newPassword = "";
@@ -180,9 +156,6 @@ export default {
           console.log("error", error);
           this.loading = false;
         });
-    },
-    uploadFile() {
-      this.newPhoto = this.$refs.file.files[0];
     },
     saveUser() {
       let data = {
@@ -197,25 +170,7 @@ export default {
       }
       this.save(data);
     },
-    savePhoto() {
-      const data = { photo: null };
-      this.save(data);
-      this.close()
-      // const reader = new FileReader();
-      // let file;
-      // reader.onloadend = () => {
-      //   file = reader.result;
-      //   console.log(reader);
-      //   const data = { photo: file };
-      //   // this.save(data);
-      //   console.log(data);
-      //   this.photo = this.newPhoto;
-      // };
-      // reader.readAsDataURL(this.newPhoto);
-    },
-    close() {
-      this.$refs["modal-photo"].hide();
-    },
+    
   },
   created: function () {
     this.$api
