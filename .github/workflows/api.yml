@@ -88,14 +88,24 @@ jobs:
       #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       #     SSH_HOST: ${{ secrets.SSH_HOST }}
 
+      - name: Generate Known Hosts
+        id: known_hosts
+        run: echo ::set-output name=KNOWN_HOSTS::$(ssh-keyscan -H ${{ secrets.SSH_HOST }})
+
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }} 
-          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-
-      - name: Adding Known Hosts
-        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          known_hosts: ${{ steps.known_hosts.outputs.KNOWN_HOSTS }}
+          config: |
+            Host server
+              HostName $SSH_HOST
+              User $SSH_USER
+              IdentityFile ~/.ssh/github-actions
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
 
       - name: Deploy image
         run: ssh server 'docker pull ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'
