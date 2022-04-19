@@ -107,8 +107,8 @@ jobs:
           known_hosts: unnecessary
           config: |
             Host server
-              HostName $SSH_HOST
-              User $SSH_USER
+              HostName 177.44.248.67
+              User univates
               IdentityFile ~/.ssh/github-actions
         env:
           SSH_USER: ${{ secrets.SSH_USER }}
