@@ -23,9 +23,9 @@ let router = new Router({
       },
     },
     {
-      path: "/relatorios",
-      name: "relatorios",
-      component: require("@/components/pages/Relatorios").default,
+      path: "/dashboard",
+      name: "dashboard",
+      component: require("@/components/pages/Dashboard").default,
       meta: {
         requiresAuth: false,
       },
@@ -33,7 +33,7 @@ let router = new Router({
     {
       path: "/pagamentos",
       name: "pagamentos",
-      component: require("@/components/pages/Pagamentos").default,
+      component: require("@/components/pages/Payments").default,
       meta: {
         requiresAuth: false,
       },
@@ -41,7 +41,7 @@ let router = new Router({
     {
       path: "/minha-conta",
       name: "minha-conta",
-      component: require("@/components/pages/Usuario").default,
+      component: require("@/components/pages/User").default,
       meta: {
         requiresAuth: false,
       },
@@ -49,7 +49,7 @@ let router = new Router({
     {
       path: "/listas-de-presentes",
       name: "listas-de-presentes",
-      component: require("@/components/pages/ListasPresentes").default,
+      component: require("@/components/pages/GiftLists").default,
       meta: {
         requiresAuth: false,
       },
@@ -57,7 +57,7 @@ let router = new Router({
     {
       path: "/lista-de-presentes/:id",
       name: "lista-de-presentes",
-      component: require("@/components/pages/ListaPresentes").default,
+      component: require("@/components/pages/GiftList").default,
       meta: {
         requiresAuth: false,
       },
