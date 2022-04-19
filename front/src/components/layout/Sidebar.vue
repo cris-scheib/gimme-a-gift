@@ -8,11 +8,7 @@
             <b-icon class="mr-1" icon="gift-fill"></b-icon>
             <span>Listas de Presentes</span>
           </b-nav-item>
-          <!-- <b-nav-item to="eventos" title="Eventos">
-            <b-icon class="mr-1" icon="calendar2-day-fill"></b-icon>
-            <span>Eventos</span>
-          </b-nav-item> -->
-          <b-nav-item to="relatorios" title="Relatórios">
+          <b-nav-item to="dashboard" title="Relatórios">
             <b-icon class="mr-1" icon="bar-chart-fill"></b-icon>
             <span>Relatórios</span>
           </b-nav-item>

@@ -1,8 +1,13 @@
 <template>
   <div class="content">
-    <b-container fluid class="form">
+    <b-container fluid class="form position-relative">
+      <div class="btn-back">
+        <b-link to="/" title="Voltar ao site">
+          <b-icon icon="arrow-left"></b-icon>
+        </b-link>
+      </div>
       <b-row class="h-100">
-        <b-col cols="12"  xl="5" lg="6" md="7" sm="9" class="m-auto">
+        <b-col cols="12" xl="5" lg="6" md="7" sm="9" class="m-auto">
           <b-card>
             <b-form>
               <header>
@@ -49,11 +54,8 @@
                 </b-form-group>
               </section>
               <footer class="center">
-                <b-button
-                  @click="check()"
-                  :disabled="loading"
-                  variant="primary"
-                >ENTRAR</b-button
+                <b-button @click="check()" :disabled="loading" variant="primary"
+                  >ENTRAR</b-button
                 >
               </footer>
             </b-form>
@@ -127,9 +129,9 @@ export default {
 }
 .form {
   background-image: url("../../assets/icon_blue.svg");
-    background-position: center;
-    background-size: cover;
-    height: 100vh;
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
 }
 .card {
   border-radius: 1em;
@@ -138,5 +140,15 @@ export default {
 }
 .card-body {
   padding: 3em 4em;
+}
+.bi-arrow-left {
+  color: #69b0b1;
+  font-size: 1.5em;
+ 
+}
+.btn-back{
+ position: absolute;
+ top: 1em;
+ left: 1em;
 }
 </style>

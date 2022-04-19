@@ -6,10 +6,17 @@
         <b-button class="btn-sidebar" @click="collapsed = !collapsed">
           <b-icon icon="list"></b-icon>
         </b-button>
-        <b-button to="/minha-conta" class="btn-usuario">
-          <img :src="this.photo" alt="Avatar" class="photo"/>
-          <p class="m-0 pl-2">{{ this.name }}</p>
-        </b-button>
+
+        <b-dropdown class="btn-usuario dropdown-no-style">
+          <template #button-content>
+            <div class="center">
+              <img :src="photo" alt="Avatar" class="photo" />
+              <p class="m-0 pl-2">{{ name }}</p>
+            </div>
+          </template>
+          <b-dropdown-item to="/minha-conta">Minha conta</b-dropdown-item>
+          <b-dropdown-item @click="logout">Sair</b-dropdown-item>
+        </b-dropdown>
       </header>
       <div class="slot">
         <slot />
@@ -38,7 +45,10 @@ export default {
   },
   created: function () {
     this.name = localStorage.getItem("name");
-    this.photo = localStorage.getItem("photo") === null ? require('@/assets/user-icon.svg') : require('@/assets/user-icon.svg');
+    this.photo =
+      localStorage.getItem("photo") === null
+        ? require("@/assets/user-icon.svg")
+        : require("@/assets/user-icon.svg");
   },
 };
 </script>
@@ -58,7 +68,7 @@ header {
   justify-content: flex-end;
   z-index: 1;
 }
-.slot{
+.slot {
   padding-top: 5rem;
 }
 .nav-link {
@@ -78,7 +88,7 @@ header {
 .btn-usuario {
   display: flex;
   background-color: unset;
-  border-color: white;
+  border: unset;
   border-radius: 3rem;
   color: white;
   justify-content: center;
@@ -92,11 +102,11 @@ header {
   width: 2em;
   border-radius: 100%;
 }
-.b-icon.bi{
+.b-icon.bi {
   font-size: 1.5em !important;
 }
-.photo{
-      background: linear-gradient(45deg, #d78db3, #69b0b1);
+.photo {
+  background: linear-gradient(45deg, #d78db3, #69b0b1);
 }
 </style>
 
