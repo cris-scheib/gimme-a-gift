@@ -88,23 +88,23 @@ jobs:
       #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       #     SSH_HOST: ${{ secrets.SSH_HOST }}
 
-      - name: Test
-        id: aaa
-        run: ssh-keyscan -H 177.44.248.67
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+      # - name: Test
+      #   id: aaa
+      #   run: ssh-keyscan -H 177.44.248.67
+      #   env:
+      #     SSH_HOST: ${{ secrets.SSH_HOST }}
 
-      - name: Generate Known Hosts
-        id: known_hosts
-        run: echo ::set-output name=KNOWN_HOSTS::$(ssh-keyscan -H $SSH_HOST)
-        env:
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+      # - name: Generate Known Hosts
+      #   id: known_hosts
+      #   run: echo ::set-output name=KNOWN_HOSTS::$(ssh-keyscan -H $SSH_HOST)
+      #   env:
+      #     SSH_HOST: ${{ secrets.SSH_HOST }}
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }} 
-          known_hosts: ${{ steps.known_hosts.outputs.KNOWN_HOSTS }}
+          known_hosts: unnecessary
           config: |
             Host server
               HostName $SSH_HOST
@@ -112,7 +112,6 @@ jobs:
               IdentityFile ~/.ssh/github-actions
         env:
           SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
 
       - name: Deploy image
