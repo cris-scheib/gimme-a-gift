@@ -53,14 +53,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build container image
-        uses: docker/build-push-action@v2
-        with:
-          context: api
-          push: true
-          tags: |
-            ghcr.io/${{ github.repository }}/${{ env.PROJECT }}:${{ github.sha }}
-            ghcr.io/${{ github.repository }}/${{ env.PROJECT }}:${{ needs.initialize.outputs.STAGE }}
+      # - name: Build container image
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: api
+      #     push: true
+      #     tags: |
+      #       ghcr.io/${{ github.repository }}/${{ env.PROJECT }}:${{ github.sha }}
+      #       ghcr.io/${{ github.repository }}/${{ env.PROJECT }}:${{ needs.initialize.outputs.STAGE }}
 
   deploy:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
@@ -87,6 +87,12 @@ jobs:
       #     SSH_USER: ${{ secrets.SSH_USER }}
       #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       #     SSH_HOST: ${{ secrets.SSH_HOST }}
+
+      - name: Test
+        id: aaa
+        run: ssh-keyscan -H $SSH_HOST
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
 
       - name: Generate Known Hosts
         id: known_hosts
