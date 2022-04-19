@@ -90,7 +90,9 @@ jobs:
 
       - name: Generate Known Hosts
         id: known_hosts
-        run: echo ::set-output name=KNOWN_HOSTS::$(ssh-keyscan -H ${{ secrets.SSH_HOST }})
+        run: echo ::set-output name=KNOWN_HOSTS::$(ssh-keyscan -H $SSH_HOST)
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
 
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
