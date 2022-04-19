@@ -90,7 +90,7 @@ jobs:
 
       - name: Test
         id: aaa
-        run: ssh-keyscan -H $SSH_HOST
+        run: ssh-keyscan -H 177.44.248.67
         env:
           SSH_HOST: ${{ secrets.SSH_HOST }}
 
