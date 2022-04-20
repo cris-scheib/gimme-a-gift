@@ -6,7 +6,6 @@ const userController = new UserController();
 
 const router = express.Router();
 
-router.post('/users', userController.store);
 router.get('/users', userController.index);
 router.patch('/users/:id', Middleware.validateToken, userController.update);
 router.delete('/users', Middleware.validateToken, userController.destroy);
