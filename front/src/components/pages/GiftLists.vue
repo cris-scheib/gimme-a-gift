@@ -99,19 +99,19 @@ export default {
   overflow: hidden;
 }
 
-.col-12:nth-child(2n + 2) .card:not(.new) .card-body {
+.col-12:nth-child(1n + 1) .card:not(.new) .card-body {
   border-top: 13px solid transparent;
   -o-border-image: linear-gradient(90deg, #d78db3, #f4d562);
   border-image: linear-gradient(90deg, #d78db3, #f4d562);
   border-image-slice: 1;
 }
-.col-12:nth-child(3n + 3) .card:not(.new) .card-body {
+.col-12:nth-child(2n + 2) .card:not(.new) .card-body {
   border-top: 13px solid transparent;
   -o-border-image: linear-gradient(90deg, #69b0b1, #f4d562);
   border-image: linear-gradient(90deg, #69b0b1, #f4d562);
   border-image-slice: 1;
 }
-.col-12:nth-child(4n + 4) .card:not(.new) .card-body {
+.col-12:nth-child(3n + 3) .card:not(.new) .card-body {
   border-top: 13px solid transparent;
   -o-border-image: linear-gradient(90deg, #69b0b1, #d78db3);
   border-image: linear-gradient(90deg, #69b0b1, #d78db3);

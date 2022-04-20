@@ -32,12 +32,6 @@ class UserController {
     });
   };
 
-  store = async (request: Request, response: Response) => {
-    console.log("Chegou no registra user");
-    const user = await User.create(request.body);
-    return response.json({ user, token: "abc" });
-  };
-
   update = async (request: Request, response: Response) => {
     const { oldPassword } = request.body;
     if (oldPassword !== undefined) {
