@@ -94,8 +94,8 @@ jobs:
       - name: Deploy image
         run: ssh server 'docker pull ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'
 
-      - name: Run stage container
-        run: ssh server 'docker rm --force ${{ needs.initialize.outputs.CONTAINER_NAME }} && docker run -d -p ${{ needs.initialize.outputs.PORT }}:3000 --name ${{ needs.initialize.outputs.CONTAINER_NAME }} ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'
-
       - name: Copy env file
         run: ssh server 'docker cp /home/univates/environments/api/.env.${{ needs.initialize.outputs.STAGE }} ${{ needs.initialize.outputs.CONTAINER_NAME }}:/home/app/api/.env'
+
+      - name: Run stage container
+        run: ssh server 'docker rm --force ${{ needs.initialize.outputs.CONTAINER_NAME }} && docker run -d -p ${{ needs.initialize.outputs.PORT }}:3000 --name ${{ needs.initialize.outputs.CONTAINER_NAME }} ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'
