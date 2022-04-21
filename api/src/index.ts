@@ -17,7 +17,7 @@ app.use(json());
 app.use('/api', routes);
 
 mongoose.connect(
-  `mongodb://127.0.0.1:27017/gimme`
+  `mongodb://${process.env.MONGODB_HOST}:${process.env.MONGODB_PORT}/${process.env.MONGODB_DATABASE}`
 );
 mongoose.connection.on('error', error => {
   console.log(error);
