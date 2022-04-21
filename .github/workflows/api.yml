@@ -44,7 +44,10 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      - name: Run build script
+        run: cd api && npm run build 
 
       - name: Login to GitHub Docker Registry
         uses: docker/login-action@v1
@@ -67,39 +70,6 @@ jobs:
     runs-on: [ubuntu-latest]
     needs: [initialize, build]
     steps:
-      # - name: Configure SSH
-      #   run: |
-      #     eval $(ssh-agent -s)
-      #     mkdir -p ~/.ssh/
-      #     chmod 700 ~/.ssh/
-      #     echo "$SSH_PRIVATE_KEY" >> ~/.ssh/github-actions
-      #     chmod 600 ~/.ssh/github-actions
-      #     ssh-add ~/.ssh/github-actions
-      #     cat >>~/.ssh/config <<END
-      #     Host server
-      #       HostName $SSH_HOST
-      #       User $SSH_USER
-      #       Port 2201
-      #       IdentityFile ~/.ssh/github-actions
-      #       StrictHostKeyChecking no
-      #     END
-      #   env:
-      #     SSH_USER: ${{ secrets.SSH_USER }}
-      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     SSH_HOST: ${{ secrets.SSH_HOST }}
-
-      # - name: Test
-      #   id: aaa
-      #   run: ssh-keyscan -H 177.44.248.67
-      #   env:
-      #     SSH_HOST: ${{ secrets.SSH_HOST }}
-
-      # - name: Generate Known Hosts
-      #   id: known_hosts
-      #   run: echo ::set-output name=KNOWN_HOSTS::$(ssh-keyscan -H $SSH_HOST)
-      #   env:
-      #     SSH_HOST: ${{ secrets.SSH_HOST }}
-
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -113,9 +83,6 @@ jobs:
               Port 2201
               IdentityFile ~/.ssh/github-actions
               StrictHostKeyChecking no
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
 
       - name: Deploy image
         run: ssh server 'docker pull ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'
