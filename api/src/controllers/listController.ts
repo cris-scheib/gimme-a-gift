@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { now } from "mongoose";
 
 import List from "../models/list";
+import User from "../models/user";
 import UserList from "../models/userList";
 
 class ListController {
@@ -9,12 +10,14 @@ class ListController {
     const { page = 1 } = request.query;
     const userId = response.locals.jwtPayload.id;
     const userLists = await UserList.find({
-      userId: userId
-    }).select({listId: 1, _id: 0});
-    const listIds = userLists.map((userList) => { return userList.listId; });
+      userId: userId,
+    }).select({ listId: 1, _id: 0 });
+    const listIds = userLists.map((userList) => {
+      return userList.listId;
+    });
     const lists = await List.paginate(
       {
-        "_id": { "$in": listIds },
+        _id: { $in: listIds },
         deletedAt: null,
       },
       {
@@ -32,18 +35,35 @@ class ListController {
     const userList = await UserList.findOne({
       userId: userId,
       listId: id,
-      status:true
-    })
-    if(userList && userList.permissions.length > 0){
+      status: true,
+    });
+    if (userList && userList.permissions.length > 0) {
       const list = await List.findById(id);
-      return response.json(list);
-    }else{
+      if (list) {
+        const userLists = await UserList.find({
+          listId: list._id,
+        }).select({ userId: 1, _id: 0 });
+        const userIds = userLists.map((userList) => {
+          return userList.userId;
+        });
+        const users = await User.find(
+          {
+            _id: { $in: userIds },
+            deletedAt: null,
+          }
+        ).select({ _id: 1, name: 1, photo: 1})
+        return response.json({ list, users });
+      }
+      return response.status(500).json({
+        auth: false,
+        message: "Erro ao buscar a lista!",
+      });
+    } else {
       return response.status(401).json({
         auth: false,
         message: "Autenticação inválida!",
       });
     }
-
   };
   create = async (request: Request, response: Response) => {
     const list = await List.create(request.body);
@@ -63,7 +83,9 @@ class ListController {
   };
 
   update = async (request: Request, response: Response) => {
-    const list = await List.findByIdAndUpdate(request.params.id, request.body, { new: true });
+    const list = await List.findByIdAndUpdate(request.params.id, request.body, {
+      new: true,
+    });
     return response.json(list);
   };
 

@@ -1,6 +1,6 @@
 
 <template>
-  <b-modal ref="modal-photo" id="modal-photo" title="Update your user image">
+  <b-modal ref="modal-photo" id="modal-photo" title="Atualizar foto">
     <b-form-file
       ref="file"
       v-model="newPhoto"
