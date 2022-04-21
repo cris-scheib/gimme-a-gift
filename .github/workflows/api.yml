@@ -1,6 +1,6 @@
 name: Build and deploy (api)
 env:
-  PROJECT: gimme-a-gift
+  PROJECT: gimme-a-gift-api
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
       STAGE: ${{ steps.get_stage.outputs.STAGE }}
       PORT: ${{ steps.get_stage.outputs.PORT }}
       IMAGE_NAME: ghcr.io/${{ github.repository }}/${{ env.PROJECT }}
-      CONTAINER_NAME: ${{ env.PROJECT }}_${{ steps.get_stage.outputs.STAGE }}
+      CONTAINER_NAME: ${{ env.PROJECT }}-${{ steps.get_stage.outputs.STAGE }}
     steps:
       - name: Get STAGE
         id: get_stage
@@ -53,14 +53,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Build container image
-      #   uses: docker/build-push-action@v2
-      #   with:
-      #     context: api
-      #     push: true
-      #     tags: |
-      #       ghcr.io/${{ github.repository }}/${{ env.PROJECT }}:${{ github.sha }}
-      #       ghcr.io/${{ github.repository }}/${{ env.PROJECT }}:${{ needs.initialize.outputs.STAGE }}
+      - name: Build container image
+        uses: docker/build-push-action@v2
+        with:
+          context: api
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}/${{ env.PROJECT }}:${{ github.sha }}
+            ghcr.io/${{ github.repository }}/${{ env.PROJECT }}:${{ needs.initialize.outputs.STAGE }}
 
   deploy:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
