@@ -1,4 +1,4 @@
-name: Build, test and deploy (api)
+name: Build and deploy (api)
 env:
   PROJECT: gimme-a-gift
 
@@ -67,26 +67,26 @@ jobs:
     runs-on: [ubuntu-latest]
     needs: [initialize, build]
     steps:
-      - name: Configure SSH
-        run: |
-          eval $(ssh-agent -s)
-          mkdir -p ~/.ssh/
-          chmod 700 ~/.ssh/
-          echo "$SSH_PRIVATE_KEY" >> ~/.ssh/github-actions
-          chmod 600 ~/.ssh/github-actions
-          ssh-add ~/.ssh/github-actions
-          cat >>~/.ssh/config <<END
-          Host server
-            HostName $SSH_HOST
-            User $SSH_USER
-            Port 2201
-            IdentityFile ~/.ssh/github-actions
-            StrictHostKeyChecking no
-          END
-        env:
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
+      # - name: Configure SSH
+      #   run: |
+      #     eval $(ssh-agent -s)
+      #     mkdir -p ~/.ssh/
+      #     chmod 700 ~/.ssh/
+      #     echo "$SSH_PRIVATE_KEY" >> ~/.ssh/github-actions
+      #     chmod 600 ~/.ssh/github-actions
+      #     ssh-add ~/.ssh/github-actions
+      #     cat >>~/.ssh/config <<END
+      #     Host server
+      #       HostName $SSH_HOST
+      #       User $SSH_USER
+      #       Port 2201
+      #       IdentityFile ~/.ssh/github-actions
+      #       StrictHostKeyChecking no
+      #     END
+      #   env:
+      #     SSH_USER: ${{ secrets.SSH_USER }}
+      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     SSH_HOST: ${{ secrets.SSH_HOST }}
 
       # - name: Test
       #   id: aaa
@@ -100,20 +100,22 @@ jobs:
       #   env:
       #     SSH_HOST: ${{ secrets.SSH_HOST }}
 
-      # - name: Install SSH Key
-      #   uses: shimataro/ssh-key-action@v2
-      #   with:
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }} 
-      #     name: id_rsa-bastion
-      #     known_hosts: unnecessary
-      #     config: |
-      #       Host server
-      #         HostName 177.44.248.67
-      #         User univates
-      #         IdentityFile ~/.ssh/id_rsa-bastion
-      #   env:
-      #     SSH_USER: ${{ secrets.SSH_USER }}
-      #     SSH_HOST: ${{ secrets.SSH_HOST }}
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }} 
+          name: github-actions
+          known_hosts: unnecessary
+          config: |
+            Host server
+              HostName $SSH_HOST
+              User $SSH_USER
+              Port 2201
+              IdentityFile ~/.ssh/github-actions
+              StrictHostKeyChecking no
+        env:
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
 
       - name: Deploy image
         run: ssh server 'docker pull ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'
