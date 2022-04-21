@@ -79,7 +79,6 @@ jobs:
           Host server
             HostName $SSH_HOST
             User $SSH_USER
-            Port 2201
             IdentityFile ~/.ssh/github-actions
             StrictHostKeyChecking no
           END
