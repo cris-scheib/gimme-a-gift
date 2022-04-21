@@ -52,10 +52,10 @@ jobs:
           node-version: '14'
 
       - name: Install dependencies
-        run: cd front && npm i -g env-cmd && npm i
+        run: cd front && npm ci
 
       - name: Run build script
-        run: cd web && npm run build
+        run: cd front && npm run build
 
       - name: Login to GitHub Docker Registry
         uses: docker/login-action@v1
