@@ -98,4 +98,4 @@ jobs:
         run: ssh server 'docker cp /home/univates/environments/api/.env.${{ needs.initialize.outputs.STAGE }} ${{ needs.initialize.outputs.CONTAINER_NAME }}:/home/app/api/.env'
 
       - name: Run stage container
-        run: ssh server 'docker rm --force ${{ needs.initialize.outputs.CONTAINER_NAME }} && docker run -d -p ${{ needs.initialize.outputs.PORT }}:3000 --name ${{ needs.initialize.outputs.CONTAINER_NAME }} ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'
+        run: ssh server 'docker rm --force ${{ needs.initialize.outputs.CONTAINER_NAME }} && docker run -d --env-file /home/univates/environments/api/.env.${{ needs.initialize.outputs.STAGE }} -p ${{ needs.initialize.outputs.PORT }}:3000 --name ${{ needs.initialize.outputs.CONTAINER_NAME }} ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'
