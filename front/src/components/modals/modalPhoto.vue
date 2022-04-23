@@ -8,13 +8,17 @@
       drop-placeholder="Arraste a imagem aqui..."
       @change="uploadFile"
     ></b-form-file>
-
     <template #modal-footer>
       <div class="w-100 flex-end">
         <b-button variant="secondary" @click="close()" class="btn-cancel mr-2">
           Cancelar
         </b-button>
-        <b-button variant="primary" @click="savePhoto()"> Salvar </b-button>
+        <b-button
+          variant="primary"
+          @click="savePhoto()"
+        >
+          Salvar
+        </b-button>
       </div>
     </template>
   </b-modal>
@@ -22,6 +26,7 @@
 
 <script>
 export default {
+  props: ["photo", "id"],
   data() {
     return {
       newPhoto: null,
@@ -35,20 +40,24 @@ export default {
       this.newPhoto = this.$refs.file.files[0];
     },
     savePhoto() {
-      const data = { photo: null };
-      this.save(data);
-      this.close();
-      // const reader = new FileReader();
-      // let file;
-      // reader.onloadend = () => {
-      //   file = reader.result;
-      //   console.log(reader);
-      //   const data = { photo: file };
-      //   // this.save(data);
-      //   console.log(data);
-      //   this.photo = this.newPhoto;
-      // };
-      // reader.readAsDataURL(this.newPhoto);
+      this.save();
+    },
+    save() {
+      const formData = new FormData();
+      formData.append("file", this.newPhoto);
+      console.log(formData, this.newPhoto)
+      const headers = { "Content-Type": "multipart/form-data" };
+       this.$api
+         .put(`/users/${this.id}/photo`, { photo: formData }, { headers })
+         .then((res) => {
+           this.newPhoto = "";
+           this.close();
+           console.log(res);
+           // this.$emit("update:photo", this.newPhoto);
+         })
+         .catch((error) => {
+           console.log("error", error);
+         });
     },
   },
 };

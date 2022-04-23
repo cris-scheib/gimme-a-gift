@@ -11,7 +11,7 @@
                 :src="this.photo"
                 v-b-modal.modal-photo
               />
-              <modal-photo/>
+              <modal-photo :photo.sync="photo" :id="id"/>
             </b-col>
             <b-col cols="12" md="8">
               <b-form>
@@ -19,16 +19,16 @@
                   <b-form-group label="Nome" label-for="name">
                     <b-form-input
                       id="name"
-                      v-model="name"
+                      v-model="form.name"
                       type="text"
-                      placeholder="name"
+                      placeholder="Nome"
                       required
                     ></b-form-input>
                   </b-form-group>
                   <b-form-group label="Email" label-for="email">
                     <b-form-input
                       id="email"
-                      v-model="email"
+                      v-model="form.email"
                       type="email"
                       placeholder="Email"
                       required
@@ -42,7 +42,7 @@
                   >
                     <b-form-select
                       id="genre"
-                      v-model="genre"
+                      v-model="form.genre"
                       :options="genres"
                       required
                     ></b-form-select>
@@ -51,7 +51,7 @@
                   <b-form-group label="CPF" label-for="cpf">
                     <b-form-input
                       id="cpf"
-                      v-model="cpf"
+                      v-model="form.cpf"
                       type="text"
                       placeholder="CPF"
                       required
@@ -106,7 +106,7 @@
 
 <script>
 import Layout from "../layout/Layout.vue";
-import ModalPhoto from '../modals/modalPhoto.vue';
+import ModalPhoto from "../modals/modalPhoto.vue";
 
 export default {
   components: {
@@ -115,16 +115,17 @@ export default {
   },
   data() {
     return {
-      id: null,
-      name: "",
-      email: "",
+      form: {
+        name: "",
+        email: "",
+        cpf: "",
+        genre: "Masculino",
+      },
       password: "",
       newPassword: "",
+      id: null,
       photo: "",
-      cpf: "",
-      genre: "Feminino",
       loading: false,
-      newPhoto: null,
       errors: [],
       errorsDuration: 12000,
       genres: ["Masculino", "Feminino", "Outros", "Prefiro não dizer"],
@@ -158,19 +159,13 @@ export default {
         });
     },
     saveUser() {
-      let data = {
-        name: this.name,
-        email: this.email,
-        cpf: this.cpf,
-        genre: this.genre,
-      };
+      let data = this.form;
       if (this.updatePassword) {
         data.oldPassword = this.password;
         data.password = this.newPassword;
       }
       this.save(data);
     },
-    
   },
   created: function () {
     this.$api
@@ -178,11 +173,14 @@ export default {
       .then((res) => res.data)
       .then((data) => {
         this.id = data.id;
-        this.name = data.name;
-        this.email = data.email;
-        this.cpf = data.cpf;
-        this.genre = data.genre === null ? "Masculino" : data.genre;
-        this.photo = data.photo === null ? require('@/assets/user-icon.svg') : require('@/assets/user-icon.svg');
+        this.form.name = data.name;
+        this.form.email = data.email;
+        this.form.cpf = data.cpf;
+        this.form.genre = data.genre === null ? "Masculino" : data.genre;
+        this.photo =
+          data.photo === null
+            ? require("@/assets/user-icon.svg")
+            : require("@/assets/user-icon.svg");
       });
   },
 };
