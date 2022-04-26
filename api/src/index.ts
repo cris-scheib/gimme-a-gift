@@ -14,6 +14,7 @@ const options: cors.CorsOptions = {
 app.use(cors());
 app.use(json());
 
+app.use(express.static('public'));
 app.use('/api', routes);
 
 mongoose.connect(

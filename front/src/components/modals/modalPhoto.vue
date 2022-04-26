@@ -13,12 +13,7 @@
         <b-button variant="secondary" @click="close()" class="btn-cancel mr-2">
           Cancelar
         </b-button>
-        <b-button
-          variant="primary"
-          @click="savePhoto()"
-        >
-          Salvar
-        </b-button>
+        <b-button variant="primary" @click="savePhoto()"> Salvar </b-button>
       </div>
     </template>
   </b-modal>
@@ -26,7 +21,7 @@
 
 <script>
 export default {
-  props: ["photo", "id"],
+  props: ["photo"],
   data() {
     return {
       newPhoto: null,
@@ -45,19 +40,19 @@ export default {
     save() {
       const formData = new FormData();
       formData.append("file", this.newPhoto);
-      console.log(formData, this.newPhoto)
-      const headers = { "Content-Type": "multipart/form-data" };
-       this.$api
-         .put(`/users/${this.id}/photo`, { photo: formData }, { headers })
-         .then((res) => {
-           this.newPhoto = "";
-           this.close();
-           console.log(res);
-           // this.$emit("update:photo", this.newPhoto);
-         })
-         .catch((error) => {
-           console.log("error", error);
-         });
+      console.log(formData, this.newPhoto);
+      this.$api
+        .put(`/users/photo`, formData, {
+          "Content-Type": "multipart/form-data",
+        })
+        .then((res) => {
+          this.newPhoto = "";
+          this.close();
+         this.$emit("update:photo", res.data.photo);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
     },
   },
 };

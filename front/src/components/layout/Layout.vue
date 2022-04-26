@@ -46,9 +46,7 @@ export default {
   created: function () {
     this.name = localStorage.getItem("name");
     this.photo =
-      localStorage.getItem("photo") === null
-        ? require("@/assets/user-icon.svg")
-        : require("@/assets/user-icon.svg");
+      localStorage.getItem("photo") || require("@/assets/user-icon.svg");
   },
 };
 </script>
@@ -100,7 +98,9 @@ header {
 }
 .btn-usuario img {
   width: 2em;
+  height: 2em;
   border-radius: 100%;
+  object-fit: cover;
 }
 .b-icon.bi {
   font-size: 1.5em !important;

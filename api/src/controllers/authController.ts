@@ -21,10 +21,10 @@ class AuthController {
             message: "Autenticação inválida!",
           });
         }
-
         const id = user._id;
         const name = user.name;
-        const photo = user.photo;
+        const dirImg = `${request.protocol}://${request.headers.host}/`
+        const photo = user.photo !== null ? dirImg + user.photo : null;
         const secret = process.env.JWT_SECRET ?? "";
         const token = jwt.sign({ id }, secret);
 

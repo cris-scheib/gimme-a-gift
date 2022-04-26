@@ -4,14 +4,14 @@
       <b-row class="center pt-5 pb-5">
         <b-col cols="12" lg="10" md="9">
           <b-row class="center">
-            <b-col cols="12" md="4" class="mb-auto">
+            <b-col cols="12" md="4" class="photo-content">
               <img
                 alt="Avatar"
                 class="photo-user"
                 :src="this.photo"
                 v-b-modal.modal-photo
               />
-              <modal-photo :photo.sync="photo" :id="id"/>
+              <modal-photo :photo.sync="photo" />
             </b-col>
             <b-col cols="12" md="8">
               <b-form>
@@ -121,9 +121,10 @@ export default {
         cpf: "",
         genre: "Masculino",
       },
+      filePath: `http://${process.env.VUE_APP_API_URL}:${+process.env
+        .VUE_APP_API_PORT}/`,
       password: "",
       newPassword: "",
-      id: null,
       photo: "",
       loading: false,
       errors: [],
@@ -143,7 +144,7 @@ export default {
     save(data) {
       this.loading = true;
       this.$api
-        .patch(`/users/${this.id}/`, data)
+        .patch(`/users/`, data)
         .then((res) => {
           this.makeToast("success", res.data.message);
           localStorage.setItem("name", this.name);
@@ -172,25 +173,46 @@ export default {
       .get(`/profile`)
       .then((res) => res.data)
       .then((data) => {
-        this.id = data.id;
         this.form.name = data.name;
         this.form.email = data.email;
         this.form.cpf = data.cpf;
         this.form.genre = data.genre === null ? "Masculino" : data.genre;
-        this.photo =
-          data.photo === null
-            ? require("@/assets/user-icon.svg")
-            : require("@/assets/user-icon.svg");
+        this.photo = data.photo || require("@/assets/user-icon.svg");
       });
   },
 };
 </script>
 <style scoped>
 .photo-user {
-  width: 100%;
+  width: 14em;
+  height: 14em;
+  object-fit: cover;
   border-radius: 100%;
   background: linear-gradient(45deg, #d78db3, #69b0b1);
   padding: 0.5em;
   cursor: pointer;
+  margin: auto;
+}
+.photo-content{
+  margin: 0 auto auto auto;
+  display: flex;
+}
+@media (min-width: 767px) {
+  .photo-user {
+    width: 10em;
+    height: 10em;
+  }
+}
+@media (min-width: 992px) {
+  .photo-user {
+    width: 14em;
+    height: 14em;
+  }
+}
+@media (min-width: 1200px) {
+  .photo-user {
+    width: 17em;
+    height: 17em;
+  }
 }
 </style>
