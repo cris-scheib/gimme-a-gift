@@ -62,7 +62,11 @@
                   >
                     <img
                       alt="Avatar"
-                      :src="user.photo || require('@/assets/user-icon.svg')"
+                      :src="
+                        user.photo == null
+                          ? require('@/assets/user-icon.svg')
+                          : dir + user.photo
+                      "
                       class="photo"
                     />
                     <p class="m-0 pl-2">{{ user.name }}</p>
@@ -93,6 +97,8 @@ export default {
     return {
       list: null,
       users: [],
+      dir: `http://${process.env.VUE_APP_API_URL}:${+process.env
+        .VUE_APP_API_PORT}/`,
       urlDelete: `/lists/${this.$route.params.id}`,
     };
   },
@@ -171,12 +177,15 @@ export default {
 }
 .photo {
   border-radius: 100%;
+  width: 1.5em;
+  height: 1.5em;
+  object-fit: cover;
 }
 .add-user {
   cursor: pointer;
 }
 .add-user:hover {
   color: white;
-  background-color: #d78db3
+  background-color: #d78db3;
 }
 </style>

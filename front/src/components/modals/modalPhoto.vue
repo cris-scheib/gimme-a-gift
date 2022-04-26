@@ -8,7 +8,6 @@
       drop-placeholder="Arraste a imagem aqui..."
       @change="uploadFile"
     ></b-form-file>
-
     <template #modal-footer>
       <div class="w-100 flex-end">
         <b-button variant="secondary" @click="close()" class="btn-cancel mr-2">
@@ -22,6 +21,7 @@
 
 <script>
 export default {
+  props: ["photo"],
   data() {
     return {
       newPhoto: null,
@@ -35,20 +35,24 @@ export default {
       this.newPhoto = this.$refs.file.files[0];
     },
     savePhoto() {
-      const data = { photo: null };
-      this.save(data);
-      this.close();
-      // const reader = new FileReader();
-      // let file;
-      // reader.onloadend = () => {
-      //   file = reader.result;
-      //   console.log(reader);
-      //   const data = { photo: file };
-      //   // this.save(data);
-      //   console.log(data);
-      //   this.photo = this.newPhoto;
-      // };
-      // reader.readAsDataURL(this.newPhoto);
+      this.save();
+    },
+    save() {
+      const formData = new FormData();
+      formData.append("file", this.newPhoto);
+      console.log(formData, this.newPhoto);
+      this.$api
+        .put(`/users/photo`, formData, {
+          "Content-Type": "multipart/form-data",
+        })
+        .then((res) => {
+          this.newPhoto = "";
+          this.close();
+         this.$emit("update:photo", res.data.photo);
+        })
+        .catch((error) => {
+          console.log("error", error);
+        });
     },
   },
 };
