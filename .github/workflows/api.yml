@@ -1,6 +1,6 @@
-name: Build, test and deploy (api)
+name: Build and deploy (api)
 env:
-  PROJECT: gimme-a-gift
+  PROJECT: gimme-a-gift-api
 
 on:
   push:
@@ -18,7 +18,7 @@ jobs:
       STAGE: ${{ steps.get_stage.outputs.STAGE }}
       PORT: ${{ steps.get_stage.outputs.PORT }}
       IMAGE_NAME: ghcr.io/${{ github.repository }}/${{ env.PROJECT }}
-      CONTAINER_NAME: ${{ env.PROJECT }}_${{ steps.get_stage.outputs.STAGE }}
+      CONTAINER_NAME: ${{ env.PROJECT }}-${{ steps.get_stage.outputs.STAGE }}
     steps:
       - name: Get STAGE
         id: get_stage
@@ -44,7 +44,17 @@ jobs:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: cd api && npm ci
+
+      - name: Run build script
+        run: cd api && npm run build 
 
       - name: Login to GitHub Docker Registry
         uses: docker/login-action@v1
@@ -67,41 +77,25 @@ jobs:
     runs-on: [ubuntu-latest]
     needs: [initialize, build]
     steps:
-      # - name: Configure SSH
-      #   run: |
-      #     eval $(ssh-agent -s)
-      #     mkdir -p ~/.ssh/
-      #     chmod 700 ~/.ssh/
-      #     echo "$SSH_PRIVATE_KEY" >> ~/.ssh/id_ed25519
-      #     chmod 600 ~/.ssh/id_ed25519
-      #     ssh-add ~/.ssh/id_ed25519
-      #     cat >>~/.ssh/config <<END
-      #     Host server
-      #       HostName $SSH_HOST
-      #       User $SSH_USER
-      #       Port 2201
-      #       IdentityFile ~/.ssh/id_ed25519
-      #       StrictHostKeyChecking no
-      #     END
-      #   env:
-      #     SSH_USER: ${{ secrets.SSH_USER }}
-      #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     SSH_HOST: ${{ secrets.SSH_HOST }}
-
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
           key: ${{ secrets.SSH_PRIVATE_KEY }} 
-          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
-
-      - name: Adding Known Hosts
-        run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+          name: github-actions
+          known_hosts: unnecessary
+          config: |
+            Host server
+              HostName ${{ secrets.SSH_HOST }}
+              User ${{ secrets.SSH_USER }}
+              Port 2201
+              IdentityFile ~/.ssh/github-actions
+              StrictHostKeyChecking no
 
       - name: Deploy image
         run: ssh server 'docker pull ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'
 
-      - name: Run stage container
-        run: ssh server 'docker rm --force ${{ needs.initialize.outputs.CONTAINER_NAME }} && docker run -d -p ${{ needs.initialize.outputs.PORT }}:3000 --name ${{ needs.initialize.outputs.CONTAINER_NAME }} ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'
-
       - name: Copy env file
         run: ssh server 'docker cp /home/univates/environments/api/.env.${{ needs.initialize.outputs.STAGE }} ${{ needs.initialize.outputs.CONTAINER_NAME }}:/home/app/api/.env'
+
+      - name: Run stage container
+        run: ssh server 'docker rm --force ${{ needs.initialize.outputs.CONTAINER_NAME }} && docker run -d --env-file /home/univates/environments/api/.env.${{ needs.initialize.outputs.STAGE }} -p ${{ needs.initialize.outputs.PORT }}:3000 --name ${{ needs.initialize.outputs.CONTAINER_NAME }} ${{ needs.initialize.outputs.IMAGE_NAME }}:${{ needs.initialize.outputs.STAGE }}'

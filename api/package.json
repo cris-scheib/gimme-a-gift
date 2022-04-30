@@ -5,6 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "start": "env-cmd -f src/config/.env.development ts-node-dev src/index.ts",
+    "start:prod": "nodemon dist/index.js",
+    "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"

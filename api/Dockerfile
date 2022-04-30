@@ -8,4 +8,4 @@ RUN npm update && npm install
 RUN npm i -g nodemon
 
 # EXPOSE 3333 3334
-CMD ["npm", "start"]
+CMD ["npm", "run", "start:prod"]
