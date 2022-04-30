@@ -24,7 +24,8 @@ class UserController {
   show = async (request: Request, response: Response) => {
     const user = await User.findById(response.locals.jwtPayload.id);
     const dirImg = `${request.protocol}://${request.headers.host}/`
-    const photo = user !== null && user.photo !== null ? dirImg + user.photo : null
+    console.log(user?.photo)
+    const photo = user?.photo === undefined ? null : dirImg + user?.photo 
     return response.json({
       id: user?._id,
       name: user?.name,

@@ -7,8 +7,7 @@ interface IUserList extends mongoose.Document {
   userId: string;
   createdAt: Date;
   updatedAt: Date;
-  permissions: Array<Object>;
-  status: boolean;
+  permission: string;
   deletedAt: Date | null;
 }
 
@@ -19,7 +18,6 @@ const UserListSchema = new mongoose.Schema({
   },
   userId: {
     type: String,
-    required: true,
   },
   createdAt: {
     type: Date,
@@ -29,13 +27,9 @@ const UserListSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  permissions: {
-    type: Array,
+  permission: {
+    type: String,
     default: [],
-  },
-  status: {
-    type: Boolean,
-    default: true,
   },
   deletedAt: {
     type: Date
