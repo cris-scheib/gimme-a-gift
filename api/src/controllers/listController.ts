@@ -35,16 +35,15 @@ class ListController {
     const userList = await UserList.findOne({
       userId: userId,
       listId: id,
-      status: true,
     });
-    if (userList && userList.permissions.length > 0) {
+    if (userList) {
       const list = await List.findById(id);
       if (list) {
-        const userLists = await UserList.find({
+        const usersLists = await UserList.find({
           listId: list._id,
         }).select({ userId: 1, _id: 0 });
-        const userIds = userLists.map((userList) => {
-          return userList.userId;
+        const userIds = usersLists.map((usersList) => {
+          return usersList.userId;
         });
         const users = await User.find(
           {
@@ -52,7 +51,7 @@ class ListController {
             deletedAt: null,
           }
         ).select({ _id: 1, name: 1, photo: 1})
-        return response.json({ list, users });
+        return response.json({ list, users, userList });
       }
       return response.status(500).json({
         auth: false,
@@ -71,7 +70,7 @@ class ListController {
     const userList = await UserList.create({
       listId: list._id,
       userId: userId,
-      permissions: ["write", "read"],
+      permission: "admin",
     });
     if (list && userList) {
       return response.json({ list, error: false });

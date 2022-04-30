@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
 import User from "../models/user";
+import Invite from "../models/invite";
+import UserList from "../models/userList";
 
 class AuthController {
   login = async (request: Request, response: Response) => {
@@ -24,7 +26,7 @@ class AuthController {
         const id = user._id;
         const name = user.name;
         const dirImg = `${request.protocol}://${request.headers.host}/`
-        const photo = user.photo !== null ? dirImg + user.photo : null;
+        const photo = user.photo === undefined ? null : dirImg + user.photo 
         const secret = process.env.JWT_SECRET ?? "";
         const token = jwt.sign({ id }, secret);
 
@@ -51,6 +53,14 @@ class AuthController {
       name: name,
     });
     if (user) {
+      const invites = await Invite.find({ email: email });
+      for (let invite of invites) {
+        await UserList.create({
+          listId: invite.listId,
+          userId: user._id,
+          permission: "client",
+        });
+      }
       const id = user._id;
       const name = user.name;
       const photo = user.photo;

@@ -71,7 +71,8 @@
                     />
                     <p class="m-0 pl-2">{{ user.name }}</p>
                   </b-list-group-item>
-                  <b-list-group-item class="list-users add-user center">
+                  <modal-invite />
+                  <b-list-group-item class="list-users add-user center" v-b-modal.modal-invite>
                     <b-icon icon="plus"></b-icon> Adicionar pessoa
                   </b-list-group-item>
                 </b-list-group>
@@ -87,15 +88,19 @@
 <script>
 import Layout from "../layout/Layout.vue";
 import ModalDelete from "../modals/modalDelete.vue";
+import ModalInvite from '../modals/modalInvite.vue';
 
 export default {
   components: {
     Layout,
     ModalDelete,
+    ModalInvite,
   },
   data() {
     return {
       list: null,
+      userList: null,
+      isAdmin: false,
       users: [],
       dir: `http://${process.env.VUE_APP_API_URL}:${+process.env
         .VUE_APP_API_PORT}/`,
@@ -108,7 +113,9 @@ export default {
       .then((res) => res.data)
       .then((data) => {
         this.list = data.list;
+        this.userList = data.userList;
         this.users = data.users;
+        this.isAdmin = this.userList.permission === "admin"
       });
   },
   methods: {
