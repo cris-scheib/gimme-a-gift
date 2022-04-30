@@ -102,7 +102,9 @@ export default {
           if (res != undefined) {
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("name", res.data.name);
-            localStorage.setItem("photo", res.data.photo);
+            if(res.data.photo){
+              localStorage.setItem("photo", res.data.photo);
+            }
             this.$router.push("/listas-de-presentes");
           } else {
             this.makeToast();
