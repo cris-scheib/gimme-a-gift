@@ -40,13 +40,12 @@ export default {
     save() {
       const formData = new FormData();
       formData.append("file", this.newPhoto);
-      console.log(formData, this.newPhoto);
       this.$api
         .put(`/users/photo`, formData, {
           "Content-Type": "multipart/form-data",
         })
         .then((res) => {
-          this.newPhoto = "";
+          this.newPhoto = null;
           this.close();
          this.$emit("update:photo", res.data.photo);
         })
