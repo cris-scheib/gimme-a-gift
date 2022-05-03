@@ -24,7 +24,6 @@ class UserController {
   show = async (request: Request, response: Response) => {
     const user = await User.findById(response.locals.jwtPayload.id);
     const dirImg = `${request.protocol}://${request.headers.host}/`
-    console.log(user?.photo)
     const photo = user?.photo === undefined ? null : dirImg + user?.photo 
     return response.json({
       id: user?._id,
@@ -79,9 +78,10 @@ class UserController {
     if (photo) {
       const save = await this.savePhoto(userId, photo);
       if (save) {
+        const dirImg = `${request.protocol}://${request.headers.host}/`
         return response.status(200).json({
           error: false,
-          photo: save,
+          photo: dirImg + save,
           message: "Foto atualizada com sucesso!",
         });
       }
