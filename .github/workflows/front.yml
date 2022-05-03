@@ -55,7 +55,7 @@ jobs:
         run: cd front && npm ci
 
       - name: Run build script
-        run: cd front && npm run build
+        run: cd front && npm run build:${{ needs.initialize.outputs.STAGE }}
 
       - name: Login to GitHub Docker Registry
         uses: docker/login-action@v1

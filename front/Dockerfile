@@ -1,18 +1,22 @@
-FROM ubuntu
+FROM node:14 AS builder
 
-ENV TZ=America/Sao_Paulo
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ENV HOME=/home/app
+# COPY . $HOME/web
+# WORKDIR $HOME/web
 
-RUN mkdir /opt/app/
+COPY ./dist $HOME/web/dist
 
-COPY . /opt/app/
+FROM nginx:alpine
 
-WORKDIR /opt/app
+ENV HOME=/home/app
 
-RUN apt update && apt install -y \
-        nodejs \
-        npm
+WORKDIR /usr/share/nginx/html
 
-RUN npm install
+RUN rm -rf ./*
 
-CMD [ "npm", "run", "serve" ]
+COPY --from=builder $HOME/web/dist .
+
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/conf.d
+
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
