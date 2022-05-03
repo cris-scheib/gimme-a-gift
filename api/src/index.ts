@@ -6,12 +6,12 @@ import cors from 'cors';
 import routes from './routes/routes';
 
 const app = express();
-const allowedOrigins = [`http://localhost:8080`];
+
 const options: cors.CorsOptions = {
-  origin: allowedOrigins
+  origin: '*'
 };
 
-app.use(cors());
+app.use(cors(options));
 app.use(json());
 
 app.use(express.static('public'));
