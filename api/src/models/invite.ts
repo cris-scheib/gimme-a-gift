@@ -4,6 +4,7 @@ import mongoosePaginate from "mongoose-paginate";
 interface IInvite extends mongoose.Document {
   listId: string;
   email: string;
+  permission: string;
   createdAt: Date;
   deletedAt: Date | null;
 }
@@ -17,6 +18,10 @@ const InviteSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/,
+  },
+  permission: {
+    type: String,
+    default: "guest",
   },
   createdAt: {
     type: Date,

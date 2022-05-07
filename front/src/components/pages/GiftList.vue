@@ -7,19 +7,31 @@
             <b-icon icon="arrow-left"></b-icon>
           </b-link>
         </div>
-        <modal-delete :url="urlDelete" redirect="/listas-de-presentes" />
         <div class="ml-auto">
           <b-dropdown right class="dropdown-no-style">
             <template #button-content>
               <b-icon icon="three-dots-vertical"></b-icon>
             </template>
-            <b-dropdown-item v-b-modal.modal-delete
+            <b-dropdown-item
+              v-b-modal.modal-delete
+              v-if="isAdmin"
+              key="delete-modal"
               >Excluir lista</b-dropdown-item
+            >
+            <b-dropdown-item
+              v-if="!isAdmin"
+              @click="confirmModal('leave')"
+              key="leave-modal"
+              >Sair da lista</b-dropdown-item
             >
           </b-dropdown>
         </div>
       </div>
       <b-container fluid>
+        <div v-if="isAdmin">
+          <modal-delete :url="urlDelete" redirect="/listas-de-presentes" />
+          <modal-invite />
+        </div>
         <b-row>
           <b-col cols="12" md="7" lg="8">
             <b-form-group class="mb-1">
@@ -30,6 +42,7 @@
                 placeholder="Nome"
                 @input="update({ name: list.name })"
                 v-if="list"
+                :disabled="!isAdmin"
               ></b-form-input>
             </b-form-group>
             <b-form-group>
@@ -40,12 +53,14 @@
                 placeholder="Descrição"
                 class="small"
                 v-if="list"
+                :disabled="!isAdmin"
                 @input="update({ description: list.description })"
               ></b-form-input>
             </b-form-group>
+            <gift-list-products />
           </b-col>
           <b-col cols="12" md="5" lg="4">
-            <b-card no-body class="m-3 card-users">
+            <b-card no-body class="mt-3 card-users">
               <b-card-header class="d-flex">
                 <b-icon class="mt-auto mb-auto" icon="people-fill"></b-icon>
                 <div class="ml-auto">
@@ -55,6 +70,11 @@
               </b-card-header>
               <div class="p-3">
                 <b-list-group>
+                  <b-list-group-item class="list-users">
+                    <img alt="Avatar" :src="photo" class="photo" />
+                    <p class="m-0 pl-2">{{ name }}</p>
+                  </b-list-group-item>
+
                   <b-list-group-item
                     v-for="user in users"
                     :key="user.id"
@@ -70,9 +90,19 @@
                       class="photo"
                     />
                     <p class="m-0 pl-2">{{ user.name }}</p>
+                    <b-button
+                      title="Remover pessoa"
+                      class="btn-remove-user"
+                      v-if="isAdmin"
+                      @click="confirmModal('remove')"
+                      >x</b-button
+                    >
                   </b-list-group-item>
-                  <modal-invite />
-                  <b-list-group-item class="list-users add-user center" v-b-modal.modal-invite>
+                  <b-list-group-item
+                    v-if="isAdmin"
+                    class="list-users add-user center"
+                    v-b-modal.modal-invite
+                  >
                     <b-icon icon="plus"></b-icon> Adicionar pessoa
                   </b-list-group-item>
                 </b-list-group>
@@ -88,13 +118,15 @@
 <script>
 import Layout from "../layout/Layout.vue";
 import ModalDelete from "../modals/modalDelete.vue";
-import ModalInvite from '../modals/modalInvite.vue';
+import ModalInvite from "../modals/modalInvite.vue";
+import GiftListProducts from "../partials/GiftListProducts.vue";
 
 export default {
   components: {
     Layout,
     ModalDelete,
     ModalInvite,
+    GiftListProducts,
   },
   data() {
     return {
@@ -108,6 +140,9 @@ export default {
     };
   },
   created: function () {
+    this.name = localStorage.getItem("name");
+    this.photo =
+      localStorage.getItem("photo") || require("@/assets/user-icon.svg");
     this.$api
       .get(`/lists/${this.$route.params.id}`)
       .then((res) => res.data)
@@ -115,12 +150,49 @@ export default {
         this.list = data.list;
         this.userList = data.userList;
         this.users = data.users;
-        this.isAdmin = this.userList.permission === "admin"
+        this.isAdmin = this.userList.permission === "admin";
       });
   },
   methods: {
     update(field) {
       this.$api.patch(`/lists/${this.$route.params.id}`, field);
+    },
+    confirmModal(type) {
+      let title = "";
+      if (type === "leave") {
+        title = "Sair";
+      } else {
+        title = "Remover usuário";
+      }
+      this.$bvModal
+        .msgBoxConfirm(`Deseja ${title.toLowerCase()} da lista de presentes?`, {
+          title: `${title} da lista de presentes`,
+          centered: true,
+          okTitle: title.split(" ")[0],
+          cancelVariant: "info",
+          cancelTitle: "Cancelar",
+        })
+        .then(() => {
+          if (type === "leave") {
+            this.leaveList();
+          } else {
+            this.removeUser();
+          }
+        });
+    },
+    leaveList() {
+      this.$api
+        .patch(`/lists/${this.$route.params.id}/leave`)
+        .then(() => {
+          this.$router.push("/listas-de-presentes");
+        })
+        .catch((error) => {
+          this.close();
+          this.makeToast("danger", error.message);
+        });
+    },
+    removeUser() {
+      console.log('ok')
     },
   },
 };
@@ -151,8 +223,8 @@ export default {
   margin-top: 0;
 }
 
-.form-control:active,
-.form-control:focus {
+.form-control:not(:disabled):active,
+.form-control:not(:disabled):focus {
   border: unset;
   border-radius: unset;
   color: #0c2e3a;
@@ -187,6 +259,16 @@ export default {
   width: 1.5em;
   height: 1.5em;
   object-fit: cover;
+}
+.btn-remove-user,
+.btn-remove-user:hover {
+  margin-left: auto;
+  border-radius: 100%;
+  padding: 0;
+  background-color: transparent;
+  border: unset;
+  width: unset;
+  color: #212529;
 }
 .add-user {
   cursor: pointer;

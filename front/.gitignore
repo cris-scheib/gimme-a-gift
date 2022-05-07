@@ -3,6 +3,8 @@ node_modules
 
 # Environment variables, never commit this file
 .env
+.env.development
+.env.production
 
 # Dist
 dist
