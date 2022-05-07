@@ -11,6 +11,7 @@ class ListController {
     const userId = response.locals.jwtPayload.id;
     const userLists = await UserList.find({
       userId: userId,
+      deletedAt: null,
     }).select({ listId: 1, _id: 0 });
     const listIds = userLists.map((userList) => {
       return userList.listId;
@@ -41,16 +42,16 @@ class ListController {
       if (list) {
         const usersLists = await UserList.find({
           listId: list._id,
+          deletedAt: null,
+          userId: { $ne: userId },
         }).select({ userId: 1, _id: 0 });
         const userIds = usersLists.map((usersList) => {
           return usersList.userId;
         });
-        const users = await User.find(
-          {
-            _id: { $in: userIds },
-            deletedAt: null,
-          }
-        ).select({ _id: 1, name: 1, photo: 1})
+        const users = await User.find({
+          _id: { $in: userIds },
+          deletedAt: null,
+        }).select({ _id: 1, name: 1, photo: 1 });
         return response.json({ list, users, userList });
       }
       return response.status(500).json({
@@ -78,6 +79,22 @@ class ListController {
     return response.status(500).json({
       error: true,
       message: "Erro ao criar a lista",
+    });
+  };
+  leave = async (request: Request, response: Response) => {
+    const { id } = request.params;
+    const userId = request.body.userId ?? response.locals.jwtPayload.id;
+    const userList = await UserList.findOneAndUpdate(
+      { listId: id, userId },
+      { deletedAt: now() },
+      { new: true }
+    );
+    if(userList){
+      return response.status(200).json(userList);
+    }
+    return response.status(500).json({
+      error: true,
+      message: "Erro ao sair a lista",
     });
   };
 

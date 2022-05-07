@@ -2,7 +2,7 @@
   <div>
     <header>
       <div class="fixed-navbar">
-        <b-navbar toggleable="lg" type="light">
+        <b-navbar type="light">
           <b-navbar-brand to="/" class="center">
             <img class="icon" src="@/assets/icon.svg" alt="Icon" />
             <h3 class="brand">Gimme a Gift</h3>

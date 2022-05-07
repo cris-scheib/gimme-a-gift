@@ -6,10 +6,10 @@ import UserList from "../models/userList";
 
 class InviteController {
   create = async (request: Request, response: Response) => {
-    const { email, listId } = request.body;
+    const { email, listId, permission } = request.body;
     const user = await User.findOne({ email: email });
     if (!user) {
-      const invite = await Invite.create({ email, listId });
+      const invite = await Invite.create({ email, listId, permission });
       if (invite) {
         return response.status(201).json({
           error: false,
@@ -20,7 +20,7 @@ class InviteController {
       const userList = await UserList.create({
         listId: listId,
         userId: user.id,
-        permission: "client",
+        permission: permission,
       });
       if (userList) {
         return response.status(201).json({

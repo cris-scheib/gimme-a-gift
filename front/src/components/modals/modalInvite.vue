@@ -6,7 +6,7 @@
     id="modal-invite"
     title="Convidar pessoa"
   >
-    <b-form-group class="m-0">
+    <b-form-group id="input-group">
       <b-form-input
         id="email"
         v-model="email"
@@ -14,6 +14,15 @@
         placeholder="Email"
         required
       ></b-form-input>
+    </b-form-group>
+
+    <b-form-group id="input-group-3">
+      <b-form-select
+        id="permission"
+        v-model="permission"
+        :options="permissions"
+        required
+      ></b-form-select>
     </b-form-group>
     <template #modal-footer>
       <div class="w-100 flex-end">
@@ -33,6 +42,17 @@ export default {
   data() {
     return {
       email: "",
+      permission: "guest",
+      permissions: [
+        {
+          text: "Convidado",
+          value: "guest",
+        },
+        {
+          text: "Adminitrador",
+          value: "admin",
+        },
+      ],
       listId: this.$route.params.id,
     };
   },

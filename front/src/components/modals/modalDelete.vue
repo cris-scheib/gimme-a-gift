@@ -1,7 +1,7 @@
 
 <template>
   <b-modal ref="modal-delete" id="modal-delete" title="Excluir registro">
-    <p>Deseja excluir a lista de presentes?</p>
+    <p class="m-0">Deseja excluir a lista de presentes?</p>
     <template #modal-footer>
       <div class="w-100 flex-end">
         <b-button variant="secondary" @click="close()" class="btn-cancel mr-2">

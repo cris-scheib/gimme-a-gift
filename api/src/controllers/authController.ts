@@ -58,7 +58,7 @@ class AuthController {
         await UserList.create({
           listId: invite.listId,
           userId: user._id,
-          permission: "client",
+          permission: invite.permission,
         });
       }
       const id = user._id;

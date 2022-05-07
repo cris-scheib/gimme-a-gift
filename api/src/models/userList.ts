@@ -1,4 +1,3 @@
-import { boolean } from "joi";
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate";
 
@@ -29,7 +28,7 @@ const UserListSchema = new mongoose.Schema({
   },
   permission: {
     type: String,
-    default: [],
+    default: "guest",
   },
   deletedAt: {
     type: Date

@@ -3,3 +3,5 @@ node_modules
 public/img/*
 !public/img/.gitkeep
 dist
+.env.development
+.env.production
