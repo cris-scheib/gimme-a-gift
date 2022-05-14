@@ -6,6 +6,7 @@ interface IList extends mongoose.Document {
   description: string;
   createdAt: Date;
   listProduct: Array<Object>;
+  deletedAt: Date | null;
 }
 
 const ListSchema = new mongoose.Schema({

@@ -68,7 +68,7 @@
                   <p class="m-0 text-center">na lista</p>
                 </div>
               </b-card-header>
-              <div class="p-3">
+              <b-card-body>
                 <b-list-group>
                   <b-list-group-item class="list-users">
                     <img alt="Avatar" :src="photo" class="photo" />
@@ -106,7 +106,7 @@
                     <b-icon icon="plus"></b-icon> Adicionar pessoa
                   </b-list-group-item>
                 </b-list-group>
-              </div>
+              </b-card-body>
             </b-card>
           </b-col>
         </b-row>
