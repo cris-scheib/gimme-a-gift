@@ -58,12 +58,12 @@ a:hover {
   border: unset;
   border-radius: unset;
   color: #0c2e3a;
-  border-bottom: 2px solid white;
+  border-bottom: 2px solid #e1e1e1;
   border-image: linear-gradient(45deg, #d78db3, #69b0b1) 1;
 }
 
 .form-control::placeholder {
-  color: #0c2e3a;
+  color: #a3a3a3;
 }
 
 .form-control:focus {
@@ -129,6 +129,7 @@ tbody tr:hover {
 
 .modal-content {
   background-color: white;
+  border: unset !important;
 }
 
 .modal-title,
@@ -166,4 +167,27 @@ label {
 }
 .dropdown-no-style .btn::after {
   content: unset;
+}
+
+.btn-remove-user, .btn-remove-user:hover, .btn-remove-user:active {
+  padding: 0;
+  background-color: unset;
+  border: unset;
+  color: inherit !important;
+  margin-left: auto;
+}
+
+#carousel-product .carousel-indicators{
+  margin-bottom: 0.5em 
+}
+#carousel-product .carousel-indicators li{
+  background-color: #d78db3;
+}
+#carousel-product .carousel-item{
+  height: 14em;
+}
+#carousel-product .img-fluid{
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }

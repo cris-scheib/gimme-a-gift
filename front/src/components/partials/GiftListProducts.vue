@@ -2,8 +2,15 @@
 <template>
   <div class="content">
     <b-row>
+      <modal-products />
       <b-col cols="12" md="6" xl="4">
-        <b-card class="new-product" no-body v-if="isAdmin">
+        <b-card
+          class="new-product"
+          no-body
+          v-if="isAdmin"
+          v-b-modal.modal-product
+          key="product-modal"
+        >
           <b-card-body class="center">
             <div>
               <div class="center mb-2">
@@ -11,16 +18,32 @@
                   <b-icon icon="plus-lg"></b-icon>
                 </div>
               </div>
-              <p class="text-center m-0">Adicinar novo <br />produto</p>
+              <p class="text-center m-0">Adicionar novo <br />produto</p>
             </div>
           </b-card-body>
         </b-card>
       </b-col>
+      <!-- <b-col
+        cols="12"
+        md="6"
+        xl="4"
+        v-for="product in list.listProduct"
+        :key="product.id"
+      >
+        <b-card class="new-product" no-body>
+          <b-card-body class="center">
+            <p class="text-center m-0">{{ product.name }}</p>
+          </b-card-body>
+        </b-card>
+      </b-col> -->
     </b-row>
   </div>
 </template>
 <script>
+import modalProducts from '../modals/modalProducts.vue';
 export default {
+  components: { modalProducts },
+  props: ["list"],
   data() {
     return {
       isAdmin: true,
