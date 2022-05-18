@@ -167,3 +167,11 @@ label {
 .dropdown-no-style .btn::after {
   content: unset;
 }
+
+.btn-remove-user, .btn-remove-user:hover, .btn-remove-user:active {
+  padding: 0;
+  background-color: unset;
+  border: unset;
+  color: inherit !important;
+  margin-left: auto;
+}

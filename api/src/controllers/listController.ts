@@ -84,12 +84,12 @@ class ListController {
   leave = async (request: Request, response: Response) => {
     const { id } = request.params;
     const userId = request.body.userId ?? response.locals.jwtPayload.id;
-    const userList = await UserList.findOneAndUpdate(
+    const userList = await UserList.updateMany(
       { listId: id, userId },
       { deletedAt: now() },
-      { new: true }
+      { new: false }
     );
-    if(userList){
+    if (userList) {
       return response.status(200).json(userList);
     }
     return response.status(500).json({

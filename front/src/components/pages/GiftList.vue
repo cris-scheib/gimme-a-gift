@@ -20,7 +20,7 @@
             >
             <b-dropdown-item
               v-if="!isAdmin"
-              @click="confirmModal('leave')"
+              @click="confirmModal()"
               key="leave-modal"
               >Sair da lista</b-dropdown-item
             >
@@ -57,57 +57,10 @@
                 @input="update({ description: list.description })"
               ></b-form-input>
             </b-form-group>
-            <gift-list-products />
+            <gift-list-products :list="list" />
           </b-col>
           <b-col cols="12" md="5" lg="4">
-            <b-card no-body class="mt-3 card-users">
-              <b-card-header class="d-flex">
-                <b-icon class="mt-auto mb-auto" icon="people-fill"></b-icon>
-                <div class="ml-auto">
-                  <p class="m-0 text-center"><strong>Pessoas</strong></p>
-                  <p class="m-0 text-center">na lista</p>
-                </div>
-              </b-card-header>
-              <b-card-body>
-                <b-list-group>
-                  <b-list-group-item class="list-users">
-                    <img alt="Avatar" :src="photo" class="photo" />
-                    <p class="m-0 pl-2">{{ name }}</p>
-                  </b-list-group-item>
-
-                  <b-list-group-item
-                    v-for="user in users"
-                    :key="user.id"
-                    class="list-users"
-                  >
-                    <img
-                      alt="Avatar"
-                      :src="
-                        user.photo == null
-                          ? require('@/assets/user-icon.svg')
-                          : dir + user.photo
-                      "
-                      class="photo"
-                    />
-                    <p class="m-0 pl-2">{{ user.name }}</p>
-                    <b-button
-                      title="Remover pessoa"
-                      class="btn-remove-user"
-                      v-if="isAdmin"
-                      @click="confirmModal('remove')"
-                      >x</b-button
-                    >
-                  </b-list-group-item>
-                  <b-list-group-item
-                    v-if="isAdmin"
-                    class="list-users add-user center"
-                    v-b-modal.modal-invite
-                  >
-                    <b-icon icon="plus"></b-icon> Adicionar pessoa
-                  </b-list-group-item>
-                </b-list-group>
-              </b-card-body>
-            </b-card>
+            <gift-list-users :users="users" :isAdmin="isAdmin" />
           </b-col>
         </b-row>
       </b-container>
@@ -120,6 +73,7 @@ import Layout from "../layout/Layout.vue";
 import ModalDelete from "../modals/modalDelete.vue";
 import ModalInvite from "../modals/modalInvite.vue";
 import GiftListProducts from "../partials/GiftListProducts.vue";
+import GiftListUsers from "../partials/GiftListUsers.vue";
 
 export default {
   components: {
@@ -127,6 +81,7 @@ export default {
     ModalDelete,
     ModalInvite,
     GiftListProducts,
+    GiftListUsers,
   },
   data() {
     return {
@@ -134,15 +89,10 @@ export default {
       userList: null,
       isAdmin: false,
       users: [],
-      dir: `http://${process.env.VUE_APP_API_URL}:${+process.env
-        .VUE_APP_API_PORT}/`,
       urlDelete: `/lists/${this.$route.params.id}`,
     };
   },
   created: function () {
-    this.name = localStorage.getItem("name");
-    this.photo =
-      localStorage.getItem("photo") || require("@/assets/user-icon.svg");
     this.$api
       .get(`/lists/${this.$route.params.id}`)
       .then((res) => res.data)
@@ -157,28 +107,25 @@ export default {
     update(field) {
       this.$api.patch(`/lists/${this.$route.params.id}`, field);
     },
-    confirmModal(type) {
-      let title = "";
-      if (type === "leave") {
-        title = "Sair";
-      } else {
-        title = "Remover usuário";
-      }
+    confirmModal() {
       this.$bvModal
-        .msgBoxConfirm(`Deseja ${title.toLowerCase()} da lista de presentes?`, {
-          title: `${title} da lista de presentes`,
+        .msgBoxConfirm(`Deseja sair da lista de presentes?`, {
+          title: `Sair da lista de presentes`,
           centered: true,
-          okTitle: title.split(" ")[0],
+          okTitle: 'Sair',
           cancelVariant: "info",
           cancelTitle: "Cancelar",
         })
         .then(() => {
-          if (type === "leave") {
-            this.leaveList();
-          } else {
-            this.removeUser();
-          }
+          this.leaveList();
         });
+    },
+    makeToast(variant, message) {
+      this.$bvToast.toast(message, {
+        title: variant === "danger" ? "Error" : "Success",
+        variant: variant,
+        solid: true,
+      });
     },
     leaveList() {
       this.$api
@@ -190,9 +137,6 @@ export default {
           this.close();
           this.makeToast("danger", error.message);
         });
-    },
-    removeUser() {
-      console.log('ok')
     },
   },
 };
@@ -236,30 +180,6 @@ export default {
   color: white;
   font-size: 1.5em;
 }
-.card-header {
-  color: white;
-  background: linear-gradient(45deg, #d78db3, #f4d562);
-  border-top-left-radius: 1rem !important;
-  border-top-right-radius: 1rem !important;
-}
-.card-users {
-  border: unset;
-  box-shadow: 0px 5px 7px 1px #dfdfdf;
-  border-radius: 1rem;
-}
-.list-users {
-  display: flex;
-  box-shadow: 0px 0px 7px 1px #dfdfdf;
-  border-radius: 1rem !important;
-  border: unset;
-  margin: 0.5em 0;
-}
-.photo {
-  border-radius: 100%;
-  width: 1.5em;
-  height: 1.5em;
-  object-fit: cover;
-}
 .btn-remove-user,
 .btn-remove-user:hover {
   margin-left: auto;
@@ -269,12 +189,5 @@ export default {
   border: unset;
   width: unset;
   color: #212529;
-}
-.add-user {
-  cursor: pointer;
-}
-.add-user:hover {
-  color: white;
-  background-color: #d78db3;
 }
 </style>
