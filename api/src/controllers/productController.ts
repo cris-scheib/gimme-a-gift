@@ -13,7 +13,7 @@ class ProductController {
       {
         page: Number(page),
         limit: 25,
-        select: ["name", "description", "link", "shop"],
+        select: ["name", "description", "link", "shop", "photos", "value", "shop"],
       }
     );
     return response.json(products);

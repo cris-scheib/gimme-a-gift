@@ -87,7 +87,7 @@ export default {
 <style scoped>
 .form-control {
   border-radius: 1rem !important;
-  border: 1px solid #ced4da;
+  border: 1px solid #e1e1e1;
 }
 </style>
 
