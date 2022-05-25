@@ -1,29 +1,40 @@
 
 <template>
   <b-modal
-    ref="modal-product"
-    id="modal-product"
+    ref="modal-products"
+    id="modal-products"
     title="Adicionar produto"
     hide-footer
-    size="lg"
+    size="xl"
   >
     <b-container fluid>
       <b-input-group>
         <b-form-input
-          id="name"
-          v-model="name"
+          id="search"
+          v-model="search"
           type="text"
-          placeholder="Nome do produto"
+          placeholder="Pesquisar produto"
           required
           class="input-product"
         ></b-form-input>
         <b-input-group-append>
-          <b-button variant="secondary" class="btn-product">Buscar</b-button>
+          <b-button
+            variant="secondary"
+            @click="getProducts()"
+            class="btn-product"
+            >Buscar</b-button
+          >
         </b-input-group-append>
       </b-input-group>
-      <div class="pt-3">
+      <div class="products-content">
         <b-row>
-          <b-col cols="12" lg="6" v-for="product in products" :key="product.id">
+          <b-col
+            cols="12"
+            xl="4"
+            lg="6"
+            v-for="product in products"
+            :key="product._id"
+          >
             <b-card>
               <b-carousel id="carousel-product" :interval="4000" indicators>
                 <b-carousel-slide
@@ -57,7 +68,10 @@
                     target="_blank"
                     >Ir para o site</b-link
                   >
-                  <b-button variant="primary" class="btn-new-product"
+                  <b-button
+                    variant="primary"
+                    class="btn-new-product"
+                    @click="addProduct(product._id)"
                     >Adicionar a lista</b-button
                   >
                 </div>
@@ -74,22 +88,27 @@
 export default {
   data() {
     return {
-      name: "",
       listId: this.$route.params.id,
       products: [],
+      search: "",
+      page: 1,
     };
   },
   created() {
-    this.$api
-      .get(`/products/`)
-      .then((res) => res.data)
-      .then((data) => {
-        this.products = data.docs;
-      });
+    this.getProducts();
   },
   methods: {
+    getProducts() {
+      const { page, search } = this;
+      this.$api
+        .get(`/products/`, { params: { page, search } })
+        .then((res) => res.data)
+        .then((data) => {
+          this.products = data.docs;
+        });
+    },
     close() {
-      this.$refs["modal-product"].hide();
+      this.$refs["modal-products"].hide();
     },
     makeToast(variant, message) {
       this.$bvToast.toast(message, {
@@ -98,8 +117,13 @@ export default {
         solid: true,
       });
     },
-    addProduct() {
-      console.log("ok");
+    addProduct(product) {
+      this.$api
+        .post(`/list-product/`, {
+          productId: product,
+          listId: this.$route.params.id,
+        })
+        .then((res) => this.makeToast("success", res.data.message));
     },
   },
 };
@@ -116,8 +140,13 @@ export default {
 .btn-product {
   border-top-right-radius: 1rem !important;
   border-bottom-right-radius: 1rem !important;
-  background-color: #d78db3;
-  border-color: #d78db3;
+}
+.btn-product,
+.btn-product:hover,
+.btn-product:focus,
+.btn-product:active {
+  background-color: #d78db3 !important;
+  border-color: #d78db3 !important;
 }
 .card {
   border-radius: 1em;
@@ -143,6 +172,12 @@ export default {
   overflow: hidden;
   color: #a3a3a3;
   line-height: 1;
+}
+.products-content {
+  max-height: 69vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin-top: 1em;
 }
 .product-value {
   color: #d78db3;

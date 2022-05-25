@@ -57,7 +57,7 @@
                 @input="update({ description: list.description })"
               ></b-form-input>
             </b-form-group>
-            <gift-list-products :list="list" />
+            <gift-list-products :list="list" v-if="loaded" />
           </b-col>
           <b-col cols="12" md="5" lg="4">
             <gift-list-users :users="users" :isAdmin="isAdmin" />
@@ -88,6 +88,7 @@ export default {
       list: null,
       userList: null,
       isAdmin: false,
+      loaded: false,
       users: [],
       urlDelete: `/lists/${this.$route.params.id}`,
     };
@@ -101,6 +102,7 @@ export default {
         this.userList = data.userList;
         this.users = data.users;
         this.isAdmin = this.userList.permission === "admin";
+        this.loaded = true;
       });
   },
   methods: {
@@ -129,7 +131,7 @@ export default {
     },
     leaveList() {
       this.$api
-        .patch(`/lists/${this.$route.params.id}/leave`)
+       .delete(`/user-list/${this.$route.params.id}`)
         .then(() => {
           this.$router.push("/listas-de-presentes");
         })

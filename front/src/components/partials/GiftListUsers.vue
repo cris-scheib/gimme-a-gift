@@ -90,7 +90,7 @@ export default {
     },
     removeUser(user) {
       this.$api
-        .patch(`/lists/${this.$route.params.id}/leave`, { userId: user._id })
+        .delete(`/user-list/${this.$route.params.id}/${user._id}`)
         .then(() => {
           const i = this.users.map((object) => object._id).indexOf(user._id);
           this.users.splice(i, 1);
