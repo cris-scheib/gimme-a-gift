@@ -90,6 +90,8 @@ a:hover {
   text-transform: uppercase;
 }
 .btn-primary:hover,
+.btn-primary:active,
+.btn-primary:focus,
 .modal-footer .btn:hover {
   color: #fff;
   background-color: #69b0b1 !important;
@@ -98,13 +100,6 @@ a:hover {
 
 .btn-edit {
   padding: 0.3rem 1.9rem 0.3rem 1.5rem;
-}
-
-.btn:focus {
-  color: #fff;
-  background-color: unset !important;
-  border-color: unset !important;
-  box-shadow: unset !important;
 }
 
 .btn-sidebar:focus,
@@ -190,4 +185,26 @@ label {
   height: 100%;
   width: 100%;
   object-fit: contain;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: .5em;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 1rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #d78db3;
+  border-radius: 1rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #69b0b1;
 }

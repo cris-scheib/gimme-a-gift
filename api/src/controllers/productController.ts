@@ -5,10 +5,11 @@ import Product from "../models/product";
 
 class ProductController {
   index = async (request: Request, response: Response) => {
-    const { page = 1 } = request.query;
+    const { page = 1, search } = request.query;
     const products = await Product.paginate(
       {
         deletedAt: null,
+        name: {$regex: search, $options: 'i'}
       },
       {
         page: Number(page),

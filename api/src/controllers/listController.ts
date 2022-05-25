@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { now } from "mongoose";
 
 import List from "../models/list";
+import Product from "../models/product";
 import User from "../models/user";
 import UserList from "../models/userList";
 
@@ -31,6 +32,7 @@ class ListController {
   };
 
   show = async (request: Request, response: Response) => {
+    const mongoose = require("mongoose");
     const { id } = request.params;
     const userId = response.locals.jwtPayload.id;
     const userList = await UserList.findOne({
@@ -38,7 +40,24 @@ class ListController {
       listId: id,
     });
     if (userList) {
-      const list = await List.findById(id);
+      const list = (
+        await List.aggregate([
+          {
+            $match: {
+              _id: mongoose.Types.ObjectId(id),
+              deletedAt: null,
+            },
+          },
+          {
+            $lookup: {
+              from: Product.collection.name,
+              localField: "listProduct.productId",
+              foreignField: "_id",
+              as: "products",
+            },
+          },
+        ])
+      )[0];
       if (list) {
         const usersLists = await UserList.find({
           listId: list._id,
@@ -79,22 +98,6 @@ class ListController {
     return response.status(500).json({
       error: true,
       message: "Erro ao criar a lista",
-    });
-  };
-  leave = async (request: Request, response: Response) => {
-    const { id } = request.params;
-    const userId = request.body.userId ?? response.locals.jwtPayload.id;
-    const userList = await UserList.updateMany(
-      { listId: id, userId },
-      { deletedAt: now() },
-      { new: false }
-    );
-    if (userList) {
-      return response.status(200).json(userList);
-    }
-    return response.status(500).json({
-      error: true,
-      message: "Erro ao sair a lista",
     });
   };
 
