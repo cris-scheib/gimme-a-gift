@@ -86,6 +86,7 @@
 
 <script>
 export default {
+  props: ["refresh"],
   data() {
     return {
       listId: this.$route.params.id,
@@ -123,7 +124,10 @@ export default {
           productId: product,
           listId: this.$route.params.id,
         })
-        .then((res) => this.makeToast("success", res.data.message));
+        .then((res) => {
+          this.makeToast("success", res.data.message);
+          this.$emit("update:refresh", true);
+        });
     },
   },
 };

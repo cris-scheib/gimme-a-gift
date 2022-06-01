@@ -47,7 +47,7 @@ export default {
         .then((res) => {
           this.newPhoto = null;
           this.close();
-         this.$emit("update:photo", res.data.photo);
+          this.$emit("update:photo", res.data.photo);
         })
         .catch((error) => {
           console.log("error", error);

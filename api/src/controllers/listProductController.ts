@@ -40,15 +40,14 @@ class ListProductController {
   };
 
   destroy = async (request: Request, response: Response) => {
-    const { id } = request.params;
-    const userId = request.params.userId ?? response.locals.jwtPayload.id;
-    const userList = await UserList.updateMany(
-      { listId: id, userId },
-      { deletedAt: now() },
-      { new: false }
+    const { id, productId } = request.params;
+    const list = await List.updateMany(
+      { _id: id },
+      { $pull: { listProduct: { productId: productId } } }
     );
-    if (userList) {
-      return response.status(200).json(userList);
+
+    if (list) {
+      return response.status(200).json(list);
     }
     return response.status(500).json({
       error: true,

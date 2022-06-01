@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Raleway:wght@200;400;500&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
 
 #app {
   height: 100vh;
@@ -71,7 +71,8 @@ a:hover {
   outline: unset;
   box-shadow: unset;
 }
-.btn-cancel, .btn-info {
+.btn-cancel,
+.btn-info {
   background-color: #bbbbbb;
   color: white;
   border: unset;
@@ -140,7 +141,6 @@ label {
   border-radius: 3rem;
   color: #69b0b1;
 }
-
 .custom-select option {
   background-color: #f4f2ea;
 }
@@ -155,7 +155,8 @@ label {
   border-color: #545b62;
 }
 
-.dropdown-no-style .btn , .dropdown-no-style .btn:active {
+.dropdown-no-style .btn,
+.dropdown-no-style .btn:active {
   background-color: unset !important;
   border: unset;
   padding: unset;
@@ -164,24 +165,36 @@ label {
   content: unset;
 }
 
-.btn-remove-user, .btn-remove-user:hover, .btn-remove-user:active {
+.btn-remove-user,
+.btn-remove-user:hover,
+.btn-remove-user:active {
   padding: 0;
   background-color: unset;
   border: unset;
   color: inherit !important;
   margin-left: auto;
 }
-
-#carousel-product .carousel-indicators{
-  margin-bottom: 0.5em 
+.btn-remove:focus,
+.btn-remove:hover,
+.btn-remove:active {
+  background-color: #a3a3a3;
+  border-color: #a3a3a3;
 }
-#carousel-product .carousel-indicators li{
+.three-dots-products {
+  color: #a3a3a3;
+  font-size: 2em !important;
+}
+
+#carousel-product .carousel-indicators {
+  margin-bottom: 0.5em;
+}
+#carousel-product .carousel-indicators li {
   background-color: #d78db3;
 }
-#carousel-product .carousel-item{
+#carousel-product .carousel-item {
   height: 14em;
 }
-#carousel-product .img-fluid{
+#carousel-product .img-fluid {
   height: 100%;
   width: 100%;
   object-fit: contain;
@@ -189,7 +202,7 @@ label {
 
 /* width */
 ::-webkit-scrollbar {
-  width: .5em;
+  width: 0.5em;
 }
 
 /* Track */
