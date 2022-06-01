@@ -2,12 +2,11 @@
 <template>
   <div class="content">
     <b-row>
-      <modal-products />
-      <b-col cols="12" md="6" xl="4">
+      <modal-products :refresh.sync="refresh" />
+      <b-col cols="12" md="6" xl="4" v-if="isAdmin">
         <b-card
           class="new-product"
           no-body
-          v-if="isAdmin"
           v-b-modal.modal-products
           key="product-modal"
         >
@@ -32,6 +31,7 @@
       >
         <modal-product
           :product="product"
+          :isAdmin="isAdmin"
           :listProduct="list.listProduct[index]"
         />
         <b-card
@@ -73,10 +73,9 @@ import ModalProduct from "../modals/modalProduct.vue";
 import modalProducts from "../modals/modalProducts.vue";
 export default {
   components: { modalProducts, ModalProduct },
-  props: ["list"],
+  props: ["list", "refresh", "isAdmin"],
   data() {
     return {
-      isAdmin: true,
     };
   },
 };

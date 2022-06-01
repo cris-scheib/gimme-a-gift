@@ -57,7 +57,12 @@
                 @input="update({ description: list.description })"
               ></b-form-input>
             </b-form-group>
-            <gift-list-products :list="list" v-if="loaded" />
+            <gift-list-products
+              :list="list"
+              :refresh.sync="refresh"
+              v-if="loaded"
+              :isAdmin="isAdmin"
+            />
           </b-col>
           <b-col cols="12" md="5" lg="4">
             <gift-list-users :users="users" :isAdmin="isAdmin" />
@@ -89,21 +94,22 @@ export default {
       userList: null,
       isAdmin: false,
       loaded: false,
+      refresh: false,
       users: [],
       urlDelete: `/lists/${this.$route.params.id}`,
     };
   },
   created: function () {
-    this.$api
-      .get(`/lists/${this.$route.params.id}`)
-      .then((res) => res.data)
-      .then((data) => {
-        this.list = data.list;
-        this.userList = data.userList;
-        this.users = data.users;
-        this.isAdmin = this.userList.permission === "admin";
-        this.loaded = true;
-      });
+    this.getList();
+  },
+  watch: {
+    // whenever refresh changes
+    refresh(refreshStatus) {
+      if (refreshStatus) {
+        this.getList();
+      }
+      this.refresh = false;
+    },
   },
   methods: {
     update(field) {
@@ -114,12 +120,12 @@ export default {
         .msgBoxConfirm(`Deseja sair da lista de presentes?`, {
           title: `Sair da lista de presentes`,
           centered: true,
-          okTitle: 'Sair',
+          okTitle: "Sair",
           cancelVariant: "info",
           cancelTitle: "Cancelar",
         })
-        .then(() => {
-          this.leaveList();
+        .then((value) => {
+          if (value) this.leaveList();
         });
     },
     makeToast(variant, message) {
@@ -131,13 +137,25 @@ export default {
     },
     leaveList() {
       this.$api
-       .delete(`/user-list/${this.$route.params.id}`)
+        .delete(`/user-list/${this.$route.params.id}`)
         .then(() => {
           this.$router.push("/listas-de-presentes");
         })
         .catch((error) => {
           this.close();
           this.makeToast("danger", error.message);
+        });
+    },
+    getList() {
+      this.$api
+        .get(`/lists/${this.$route.params.id}`)
+        .then((res) => res.data)
+        .then((data) => {
+          this.list = data.list;
+          this.userList = data.userList;
+          this.users = data.users;
+          this.isAdmin = this.userList.permission === "admin";
+          this.loaded = true;
         });
     },
   },
