@@ -69,14 +69,16 @@
             </b-dropdown>
           </div>
           <hr />
-          <b-form-checkbox
+          <!-- <b-form-checkbox
             id="buyable"
             v-model="bought"
             name="buyable"
             value="true"
+            @change="boughtProduct()"
           >
+            {{ listProduct.buyable }}
             Assumo a compra e entrega do produto
-          </b-form-checkbox>
+          </b-form-checkbox> -->
           <b-card
             no-body
             class="m-3 card-payments"
@@ -109,11 +111,12 @@
                 </b-list-group-item>
                 <b-list-group-item
                   class="list-users add-user center"
-                  v-b-modal.modal-invite
+                 v-b-modal="`modal-payment-${product._id}`"
                   :disabled="bought === 'true'"
                 >
                   Ajudar com algum Valor
                 </b-list-group-item>
+                <modal-payment :product="product" />
               </b-list-group>
             </b-card-body>
           </b-card>
@@ -124,7 +127,9 @@
 </template>
 
 <script>
+import ModalPayment from "./modalPayment.vue";
 export default {
+  components: { ModalPayment },
   props: ["product", "listProduct", "isAdmin"],
   data() {
     return {
@@ -156,13 +161,36 @@ export default {
       this.$api
         .delete(`/list-product/${this.$route.params.id}/${this.product._id}`)
         .then(() => {
-          this.close()
+          this.close();
+          this.$emit("refresh-data");
         })
         .catch((error) => {
           this.close();
           this.makeToast("danger", error.message);
         });
     },
+    makeToast(variant, message) {
+      this.$bvToast.toast(message, {
+        title: variant === "danger" ? "Error" : "Success",
+        variant: variant,
+        solid: true,
+      });
+    },
+    boughtProduct() {
+      // this.$api
+      //   .patch(`/list-product/${this.$route.params.id}`, {
+      //     product: this.product._id,
+      //     field: 'buyable'
+      //   })
+      //   .then(() => {
+      //     this.close();
+      //   })
+      //   .catch((error) => {
+      //     this.close();
+      //     this.makeToast("danger", error.message);
+      //   });
+    },
+    addPayment() {},
     close() {
       this.$refs[`modal-product-${this.product._id}`].hide();
     },
