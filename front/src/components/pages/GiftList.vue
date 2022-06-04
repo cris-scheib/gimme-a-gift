@@ -59,8 +59,8 @@
             </b-form-group>
             <gift-list-products
               :list="list"
-              :refresh.sync="refresh"
               v-if="loaded"
+              @refresh-data="refresh"
               :isAdmin="isAdmin"
             />
           </b-col>
@@ -94,7 +94,6 @@ export default {
       userList: null,
       isAdmin: false,
       loaded: false,
-      refresh: false,
       users: [],
       urlDelete: `/lists/${this.$route.params.id}`,
     };
@@ -102,18 +101,12 @@ export default {
   created: function () {
     this.getList();
   },
-  watch: {
-    // whenever refresh changes
-    refresh(refreshStatus) {
-      if (refreshStatus) {
-        this.getList();
-      }
-      this.refresh = false;
-    },
-  },
   methods: {
     update(field) {
       this.$api.patch(`/lists/${this.$route.params.id}`, field);
+    },
+    refresh() {
+      this.getList()
     },
     confirmModal() {
       this.$bvModal
