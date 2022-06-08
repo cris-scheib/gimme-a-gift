@@ -167,9 +167,10 @@ label {
 
 .btn-remove-user,
 .btn-remove-user:hover,
+.btn-remove-user:focus,
 .btn-remove-user:active {
   padding: 0;
-  background-color: unset;
+  background-color: unset !important;
   border: unset;
   color: inherit !important;
   margin-left: auto;
