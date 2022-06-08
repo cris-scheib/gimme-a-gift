@@ -101,6 +101,7 @@ export default {
         .then((res) => {
           if (res != undefined) {
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem("id", res.data.id);
             localStorage.setItem("name", res.data.name);
             if(res.data.photo){
               localStorage.setItem("photo", res.data.photo);
