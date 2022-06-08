@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { now } from "mongoose";
-
+const mongoose = require("mongoose");
 import List from "../models/list";
 import Product from "../models/product";
 import User from "../models/user";
@@ -32,7 +32,6 @@ class ListController {
   };
 
   show = async (request: Request, response: Response) => {
-    const mongoose = require("mongoose");
     const { id } = request.params;
     const userId = response.locals.jwtPayload.id;
     const userList = await UserList.findOne({
