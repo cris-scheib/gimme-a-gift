@@ -8,11 +8,11 @@
             <b-icon class="mr-1" icon="gift-fill"></b-icon>
             <span>Listas de Presentes</span>
           </b-nav-item>
-          <b-nav-item to="dashboard" title="Relatórios">
+          <b-nav-item to="/dashboard" title="Relatórios">
             <b-icon class="mr-1" icon="bar-chart-fill"></b-icon>
             <span>Relatórios</span>
           </b-nav-item>
-          <b-nav-item to="pagamentos" title="Meus Pagamentos">
+          <b-nav-item to="/pagamentos" title="Meus Pagamentos">
             <b-icon class="mr-1" icon="credit-card"></b-icon>
             <span>Meus Pagamentos</span>
           </b-nav-item>

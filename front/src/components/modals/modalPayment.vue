@@ -6,7 +6,7 @@
     centered
     title="Realizar pagamento"
   >
-    <b-form-group id="input-group">
+    <b-form-group id="input-group" v-if="!bought">
       <b-form-input
         id="value"
         v-model="value"
@@ -15,14 +15,22 @@
         required
       ></b-form-input>
     </b-form-group>
-
+    <b-form-checkbox
+      id="buyable"
+      v-model="bought"
+      v-if="buyable"
+      name="buyable"
+      :value="true"
+    >
+      Assumo a compra e entrega do produto
+    </b-form-checkbox>
     <template #modal-footer>
       <div class="w-100 flex-end">
         <b-button variant="secondary" @click="close()" class="btn-cancel mr-2">
           Cancelar
         </b-button>
         <b-button variant="primary" @click="sendPayment()">
-          Confirmar pagamento
+          Confirmar
         </b-button>
       </div>
     </template>
@@ -31,10 +39,11 @@
 
 <script>
 export default {
-  props: ["product"],
+  props: ["product", "list", "buyable"],
   data() {
     return {
       value: "",
+      bought: false,
     };
   },
   methods: {
@@ -48,15 +57,23 @@ export default {
         solid: true,
       });
     },
+    getTrueValue() {
+      if (this.bought) {
+        return this.product.value;
+      } else {
+        return this.value;
+      }
+    },
     sendPayment() {
-      const { value } = this;
       this.$api
-        .patch(`/list-product/${this.$route.params.id}`, {
-          product: this.product._id,
-          field: "payment",
-          value: value,
+        .post(`/payments/`, {
+          productId: this.product._id,
+          listId: this.list._id,
+          value: this.getTrueValue(),
         })
         .then(() => {
+          this.$emit("sycPayments");
+          this.value = "";
           this.close();
         })
         .catch((error) => {

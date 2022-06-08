@@ -27,13 +27,13 @@
         md="6"
         xl="4"
         v-for="(product, index) in list.products"
-        :key="product.productId"
+        :key="index"
       >
         <modal-product
           :product="product"
           :isAdmin="isAdmin"
           v-on="$listeners"
-          :listProduct="list.listProduct[index]"
+          :list="list"
         />
         <b-card
           class="existing-product"

@@ -3,14 +3,24 @@ import mongoosePaginate from "mongoose-paginate";
 
 interface IPayment extends mongoose.Document {
   userId: string;
-  valeu: number;
+  listId: string;
+  productId: string;
+  value: number;
   createdAt: Date;
   deletedAt: Date | null;
 }
 
 const PaymentSchema = new mongoose.Schema({
   userId: {
-    type: String,
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
+  listId: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
+  productId: {
+    type: mongoose.Types.ObjectId,
     required: true,
   },
   value: {

@@ -8,6 +8,7 @@ import { inviteRouter } from './invites';
 import { productRouter } from './products';
 import { userListRouter } from './userLists';
 import { listProductRouter } from './listProduct';
+import { paymentRouter } from './payments';
 
 const routes = express.Router();
 routes.use(homeRouter);
@@ -18,5 +19,6 @@ routes.use(inviteRouter);
 routes.use(productRouter);
 routes.use(userListRouter);
 routes.use(listProductRouter);
+routes.use(paymentRouter);
 
 export default routes;
