@@ -9,6 +9,7 @@ import { productRouter } from './products';
 import { userListRouter } from './userLists';
 import { listProductRouter } from './listProduct';
 import { paymentRouter } from './payments';
+import { dashboardRouter } from './dashboard';
 
 const routes = express.Router();
 routes.use(homeRouter);
@@ -20,5 +21,6 @@ routes.use(productRouter);
 routes.use(userListRouter);
 routes.use(listProductRouter);
 routes.use(paymentRouter);
+routes.use(dashboardRouter);
 
 export default routes;
