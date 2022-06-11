@@ -1,33 +1,39 @@
 <template>
   <layout>
-    <b-container>
-      <b-table
-        striped
-        hover
-        class="history-content"
-        :items="payments"
-        :fields="fields"
-      >
-        <template #cell(track)="data">
-          <a
-            :href="'https://open.spotify.com/track/' + data.item.track_spotify"
-            target="_blank"
-            class="spotify-link"
-            >{{ data.value }}</a
-          >
-        </template>
-        <template #cell(artist)="data">
-          <a
-            :href="
-              'https://open.spotify.com/artist/' + data.item.artist_spotify
-            "
-            target="_blank"
-            class="spotify-link"
-            >{{ data.value }}</a
-          >
-        </template>
-      </b-table>
-    </b-container>
+    <div class="page-content">
+      <b-container>
+        <h4>Meus pagamentos</h4>
+        <b-table
+          class="payments-table"
+          :items="payments"
+          :fields="fields"
+        >
+          <template #cell(list)="data">
+            <a
+              :href="`/lista-de-presentes/${data.item.list[0]._id}`"
+              target="_blank"
+              class="list-link"
+            >
+              {{ data.item.list[0].name }}</a
+            >
+          </template>
+          <template #cell(product)="data">
+            {{ data.item.product[0].name }}
+          </template>
+          <template #cell(value)="data">
+            {{
+              new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(data.value)
+            }}
+          </template>
+          <template #cell(createdAt)="data">
+            {{ moment(data.unformatted).format("DD/MM/YYYY HH:mm:ss") }}
+          </template>
+        </b-table>
+      </b-container>
+    </div>
   </layout>
 </template>
 
@@ -41,7 +47,12 @@ export default {
   data() {
     return {
       payments: [],
-      fields: ["listId", "value", "createdAt"],
+      fields: [
+        { key: "list", label: "Lista" },
+        { key: "product", label: "Produto" },
+        { key: "value", label: "Valor" },
+        { key: "createdAt", label: "Data/Hora" },
+      ],
     };
   },
   created() {
@@ -50,15 +61,17 @@ export default {
   methods: {
     getPayments() {
       this.$api
-        .get(`/payments/`)
+        .get(`/my-payments/`)
         .then((res) => res.data)
         .then((data) => {
           this.payments = data;
-          console.log(this.payments);
         });
     },
   },
 };
 </script>
 <style scoped>
+.list-link {
+  color: #69b0b1;
+}
 </style>
