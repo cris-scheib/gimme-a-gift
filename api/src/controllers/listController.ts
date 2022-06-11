@@ -113,6 +113,11 @@ class ListController {
       { deletedAt: now() },
       { new: true }
     );
+    await UserList.updateMany(
+      { listId: request.params.id },
+      { deletedAt: now() },
+      { new: false }
+    );
     return response.json(list);
   };
 }

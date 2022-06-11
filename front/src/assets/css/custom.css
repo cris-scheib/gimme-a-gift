@@ -49,6 +49,27 @@ body {
   align-items: center;
 }
 
+.page-content {
+  margin-left: 1em;
+  margin-top: 1em;
+  border-top-left-radius: 1rem;
+  min-height: calc(100vh - 6em);
+  box-shadow: 0px 5px 7px 1px #dfdfdf;
+  background-color: white;
+  position: relative;
+  padding: 2em 2em 2em 3em;
+}
+.page-content::after {
+  background: linear-gradient(0deg, #69b0b1, #f4d562, #cc90b2);
+  border-top-left-radius: 1rem;
+  width: 2rem;
+  height: 100%;
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+}
+
 a:hover {
   text-decoration: none;
 }
@@ -117,12 +138,6 @@ a:hover {
 .form-control:disabled {
   background-color: white;
 }
-
-tbody tr:hover {
-  color: #f4f2ea !important;
-  background-color: #3f3f47 !important;
-}
-
 .modal-content {
   background-color: white;
   border: unset !important;
@@ -140,9 +155,6 @@ label {
   background-color: #ffffff00;
   border-radius: 3rem;
   color: #69b0b1;
-}
-.custom-select option {
-  background-color: #f4f2ea;
 }
 
 .modal-footer .btn {

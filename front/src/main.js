@@ -5,6 +5,7 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import axios from 'axios'
+import moment from 'moment'
 
 require('./assets/css/custom.css');
 const api = axios.create({
@@ -35,6 +36,7 @@ api.interceptors.response.use(
         }
     }
 )
+Vue.prototype.moment = moment
 Vue.api = Vue.prototype.$api = api
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
