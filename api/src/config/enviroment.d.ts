@@ -10,6 +10,10 @@ declare global {
       MONGODB_PORT: number;
       MONGODB_DATABASE: string;
 
+      MAIL_ADDRESS: string;
+      MAIL_PASSWORD: string;
+      MAIL_HOST: string;
+
       BCRYPT_SALT: number;
       JWT_SECRET: string;
     }
