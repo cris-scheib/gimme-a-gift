@@ -26,7 +26,7 @@ class AuthController {
         const id = user._id;
         const name = user.name;
         const dirImg = `${request.protocol}://${request.headers.host}/`
-        const photo = user.photo === undefined ? null : dirImg + user.photo 
+        const photo = user.photo === undefined ? null : dirImg + user.photo
         const secret = process.env.JWT_SECRET ?? "";
         const token = jwt.sign({ id }, secret);
 
@@ -80,6 +80,15 @@ class AuthController {
         message: "Erro ao registrar do usuário!",
       });
     }
+  };
+
+  destroy = async (request: Request, response: Response) => {
+    const { id } = request.params;
+    const deletedUser = await User.deleteOne({ _id: id});
+
+    return response.status(200).json({
+      deleted: deletedUser
+    });
   };
 }
 
