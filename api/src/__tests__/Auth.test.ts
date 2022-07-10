@@ -3,11 +3,6 @@ import request from 'supertest';
 import { app, server } from '../index';
 
 describe("Auth", () => {
-  beforeAll(async () => {
-    // const database = new Database();
-    // database.connect();
-  });
-
   afterAll(async () => {
     const database = new Database();
     database.disconnect();
