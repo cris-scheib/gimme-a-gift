@@ -1,0 +1,417 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: 'Gimme a Gift API'
+  description: 'A API that allows users to manage gifts presents, users and paymenths'
+  termsOfService: https://gimme-a-gift.com.br/terms-of-service
+  contact: 
+    name: Cristine
+    url: gimme-a-gift.com.br
+    email: adm.gimme.gift@gmail.com
+  license:
+    name: Gimme a Gift License
+    url: https://license.gimme-a-gift.com.br
+    
+servers: 
+  - url: https://dev.gimme-a-gift.com.br/api/v1
+    description: Dev Server
+    
+  - url: https://gimme-a-gift.com.br/api
+    description: Prod Server
+
+paths:
+  /lists:
+    get:
+      description: Obtain the information about lists from the database
+      parameters: 
+        - name: page
+          in: query
+          description: The page number of the pagination
+          schema:
+            type: integer
+            nullable: true
+            minimum: 1
+            maximum: 100
+            example: 2
+      responses:
+        200:
+          description: Successfully pull of the lists info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  docs: 
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        _id: 
+                          type: string
+                          example: 5a146848c1e256878e168f9584
+                        name:
+                          type: string
+                          example: Wedding List
+                        description:
+                          type: string
+                          example: My wedding list, best man Joe and maid of honor Mary
+                  totalDocs:
+                    type: integer
+                    example: 123
+                  limit: 
+                    type: integer
+                    example: 10
+                  hasPrevPage:
+                    type: boolean
+                    example: false
+                  hasNextPage:
+                    type: boolean
+                    example: true
+                  page:
+                    type: integer
+                    example: 1
+        401:
+          description: Unauthenticated or unauthorized user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Unauthenticated or unauthorized user
+                  error:
+                    type: boolean
+                    example: true
+        500:
+          description: Error to retrieve the lists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Error to retrieve the lists
+                  error:
+                    type: boolean
+                    example: false
+    post: 
+      description: Creates a list in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Wedding List
+                description:
+                  type: string
+                  example: My wedding list, best man Joe and maid of honor Mary
+                listProducts: 
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            _id: 
+                              type: string
+                              example: 5a146848c1e256878e168f9584
+                            name:
+                              type: string
+                              example: Refrigerator 
+                            description:
+                              type: string
+                              example: Description of the refrigerator
+      responses:
+        201:
+          description: Successfully created a list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  list: 
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        example: 5a146848c1e256878e168f9584
+                      name:
+                        type: string
+                        example: Wedding List
+                      description:
+                        type: string
+                        example: My wedding list, best man Joe and maid of honor Mary
+                      createdAt: 
+                        type: string
+                        description: ISODate in UTC
+                        format: date-time
+                        example: '2002-12-09T00:00:00.000Z'
+                      listProducts: 
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            _id: 
+                              type: string
+                              example: 5a146848c1e256878e168f9584
+                            name:
+                              type: string
+                              example: Refrigerator 
+                            description:
+                              type: string
+                              example: Description of the refrigerator
+                  error:
+                    type: boolean
+                    example: false
+        401:
+          description: Unauthenticated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Unauthenticated user
+                  error:
+                    type: boolean
+                    example: true
+        500:
+          description: Error to created a list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Error to the list
+                  error:
+                    type: boolean
+                    example: false
+  /lists/{id}:
+    get:
+      description: Obtain the information about a list from the database
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: The list ID
+          schema:
+            type: integer
+            example: 5a146848c1e256878e168f9584
+      responses:
+        200:
+          description: Successfully pull of the list info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id: 
+                    type: string
+                    example: 5a146848c1e256878e168f9584
+                  name:
+                    type: string
+                    example: Wedding List
+                  description:
+                    type: string
+                    example: My wedding list, best man Joe and maid of honor Mary
+        401:
+          description: Unauthenticated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Unauthenticated user
+                  error:
+                    type: boolean
+                    example: true
+        500:
+          description: Error to retrieve the list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Error to retrieve the list
+                  error:
+                    type: boolean
+                    example: false
+    patch: 
+      description: Modify a list in the database
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: The list ID
+          schema:
+            type: integer
+            example: 5a146848c1e256878e168f9584
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  nullable: true
+                  example: Wedding List
+                description:
+                  type: string
+                  nullable: true
+                  example: My wedding list, best man Joe and  maid of honor Mary
+                listProducts: 
+                  type: array
+                  nullable: true
+                  items:
+                    type: object
+                    properties:
+                      _id: 
+                        type: string
+                        example: 5a146848c1e256878e168f9584
+                      name:
+                        type: string
+                        example: Refrigerator 
+                      description:
+                        type: string
+                        example: Description of the refrigerator
+      responses:
+        201:
+            description: Successfully created a list
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    list: 
+                      type: object
+                      properties:
+                        _id: 
+                          type: string
+                          example: 5a146848c1e256878e168f9584
+                        name:
+                          type: string
+                          example: Wedding List
+                        description:
+                          type: string
+                          example: My wedding list, best man Joe  and maid of honor Mary
+                        createdAt: 
+                          type: string
+                          description: ISODate in UTC
+                          format: date-time
+                          example: '2002-12-09T00:00:00.000Z'
+                        listProducts: 
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              _id: 
+                                type: string
+                                example:   5a146848c1e256878e168f9584
+                              name:
+                                type: string
+                                example: Refrigerator 
+                              description:
+                                type: string
+                                example: Description of the   refrigerator
+                    error:  
+                      type: boolean
+                      example: false
+        401:
+          description: Unauthenticated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Unauthenticated user
+                  error:
+                    type: boolean
+                    example: true
+        500:
+          description: Error to created a list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Error to modify the list
+                  error:
+                    type: boolean
+                    example: false
+    delete:
+      description: Delete a list from the database
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          description: The list ID
+          schema:
+            type: integer
+            example: 5a146848c1e256878e168f9584
+      responses:
+        200:
+          description: Successfully deleted the list info
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id: 
+                    type: string
+                    example: 5a146848c1e256878e168f9584
+                  name:
+                    type: string
+                    example: Wedding List
+                  description:
+                    type: string
+                    example: My wedding list, best man Joe and maid of honor Mary
+                  deletedAt:
+                    type: string
+                    description: ISODate in UTC
+                    format: date-time
+                    example: '2002-12-09T00:00:00.000Z'
+                    
+        401:
+          description: Unauthenticated user
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Unauthenticated user
+                  error:
+                    type: boolean
+                    example: true
+        500:
+          description: Error to delete the list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message: 
+                    type: string
+                    example: Error to delete the list
+                  error:
+                    type: boolean
+                    example: false
+      
